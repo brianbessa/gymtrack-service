@@ -16,6 +16,8 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from decimal import Decimal, InvalidOperation
 from django.utils.timezone import localtime
+from django.db.models import Sum
+from django.db.models.functions import TruncDate
 
 def home_view(request):
     return render(request, 'home.html')
@@ -131,8 +133,9 @@ def perfil_view(request):
 def plano_nutricional_view(request):
     return render(request, 'plano-nutricional.html')
 
-def acompanhar_processo_view(request):
-    return render(request, 'acompanhar-processo.html')
+def acompanhar_processo_cargas_view(request):
+    exercicios = Exercicio.objects.all()
+    return render(request, 'acompanhar-processo-cargas.html', {'exercicios': exercicios})
 
 def treinos_personalizados_view(request):
     return render(request, 'treinos-personalizados.html')
@@ -323,3 +326,69 @@ def deletar_serie(request, serie_id):
         except RegistroCarga.DoesNotExist:
             return JsonResponse({"status": "erro", "mensagem": "Série não encontrada"})
     return JsonResponse({"status": "erro", "mensagem": "Requisição inválida"})
+
+@login_required
+def grafico_cargas(request, exercicio_id):
+    try:
+        registros = RegistroCarga.objects.filter(usuario=request.user, exercicio_id=exercicio_id).order_by('data')
+
+        if not registros.exists():
+            return JsonResponse({
+                'labels': [],
+                'data': [],
+                'max_carga': 0,
+                'min_carga': 0,
+                'total_reps': 0,
+                'total_series': 0,
+                'media_reps_por_serie': 0,
+                'data_max_carga': None,
+            })
+
+        labels = [r.data.strftime("%d/%m %H:%M") for r in registros]
+        data = [r.carga for r in registros]
+
+        total_reps = sum(r.repeticoes for r in registros)
+        total_series = registros.count()
+        max_carga = max(r.carga for r in registros)
+        min_carga = min(r.carga for r in registros)
+        media_reps_por_serie = total_reps / total_series if total_series else 0
+
+        # Pega a primeira ocorrência da maior carga
+        data_max_carga = registros.filter(carga=max_carga).first()
+        data_max_carga = data_max_carga.data.strftime("%d/%m %H:%M") if data_max_carga else None
+
+        return JsonResponse({
+            'labels': labels,
+            'data': data,
+            'max_carga': max_carga,
+            'min_carga': min_carga,
+            'total_reps': total_reps,
+            'total_series': total_series,
+            'media_reps_por_serie': round(media_reps_por_serie, 1),
+            'data_max_carga': data_max_carga,
+        })
+
+    except Exception as e:
+        print("Erro na view grafico_cargas:", e)
+        return JsonResponse({'erro': 'Erro interno no servidor'}, status=500)
+
+@login_required
+def grafico_series_repeticoes(request, exercicio_id):
+    try:
+        registros = (
+            RegistroCarga.objects
+            .filter(usuario=request.user, exercicio_id=exercicio_id)
+            .annotate(data_formatada=TruncDate('data'))
+            .values('data_formatada')
+            .annotate(total_reps=Sum('repeticoes'))
+            .order_by('data_formatada')
+        )
+
+        labels = [r['data_formatada'].strftime('%d/%m') for r in registros]
+        data = [r['total_reps'] for r in registros]
+
+        return JsonResponse({'labels': labels, 'data': data})
+
+    except Exception as e:
+        print(f"Erro na view grafico_series_repeticoes: {e}")
+        return JsonResponse({'erro': 'Erro ao gerar gráfico'}, status=500)

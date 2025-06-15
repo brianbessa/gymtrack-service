@@ -18,7 +18,7 @@ urlpatterns = [
     path('perfil/', views.perfil_view, name='perfil'),
     path('plano-nutricional/', views.plano_nutricional_view, name='plano-nutricional'),
     path('treinos-personalizados/', views.treinos_personalizados_view, name='treinos-personalizados'),
-    path('acompanhar-processo/', views.acompanhar_processo_view, name='acompanhar-processo'),
+    path('acompanhar-processo/', views.acompanhar_processo_cargas_view, name='acompanhar-processo-cargas'),
     path('nutricionista/', views.nutricionista_view, name='nutricionista'),
     path('clientes', views.clientes_view, name='clientes'),
     path('atualizar-perfil/', views.atualizar_perfil, name='atualizar_perfil'),
@@ -30,4 +30,6 @@ urlpatterns = [
     path('listar-series/<int:exercicio_id>/', views.listar_series, name='listar_series'),
     path('editar-serie/<int:serie_id>/', views.editar_serie, name='editar_serie'),
     path('deletar-serie/<int:serie_id>/', views.deletar_serie, name='deletar_serie'),
+    path("grafico/cargas/<int:exercicio_id>/", views.grafico_cargas, name="grafico_cargas"),
+    path("grafico/series-repeticoes/<int:exercicio_id>/", views.grafico_series_repeticoes, name="grafico_series_repeticoes"),
 ]
