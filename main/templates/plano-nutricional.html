@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Notificações - GymTrack{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/plano-nutricional.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main class="main-content">
+        <input type="text" class="search" placeholder="🔍 Pesquisar notificações">
+
+      <div class="macro-panel">
+        <div class="macro">
+          <div class="circle cal"></div>
+          <div><strong>Calorias</strong><br>1720 [2450]</div>
+        </div>
+        <div class="macro">
+          <div class="circle carb"></div>
+          <div><strong>Carboidratos</strong><br>210 [280]</div>
+        </div>
+        <div class="macro">
+          <div class="circle prot"></div>
+          <div><strong>Proteínas</strong><br>70 [130]</div>
+        </div>
+      </div>
+
+      <div class="refeicoes">
+        <div class="refeicao" onclick="toggleRefeicao(this)">
+          <div class="info">
+            <div class="nome">Café da manhã</div>
+            <div class="horario">06:00</div>
+          </div>
+          <button class="toggle">⌄</button>
+          <div class="status check" onclick="toggleStatus(event, this)"></div>
+        </div>
+
+        <div class="refeicao" onclick="toggleRefeicao(this)">
+          <div class="info">
+            <div class="nome">Lanche da manhã</div>
+            <div class="horario">09:00</div>
+          </div>
+          <button class="toggle">⌄</button>
+          <div class="status check" onclick="toggleStatus(event, this)"></div>
+        </div>
+
+        <div class="refeicao" onclick="toggleRefeicao(this)">
+          <div class="info">
+            <div class="nome">Almoço</div>
+            <div class="horario">12:00</div>
+          </div>
+          <button class="toggle">⌄</button>
+          <div class="status check" onclick="toggleStatus(event, this)"></div>
+        </div>
+
+        <div class="refeicao" onclick="toggleRefeicao(this)">
+          <div class="info">
+            <div class="nome">Lanche da Tarde</div>
+            <div class="horario">15:30</div>
+          </div>
+          <button class="toggle">⌄</button>
+          <div class="status pending" onclick="toggleStatus(event, this)"></div>
+        </div>
+
+        <div class="refeicao" onclick="toggleRefeicao(this)">
+          <div class="info">
+            <div class="nome">Jantar</div>
+            <div class="horario">18:30</div>
+          </div>
+          <button class="toggle">⌄</button>
+          <div class="status pending" onclick="toggleStatus(event, this)"></div>
+        </div>
+
+        <div class="refeicao" onclick="toggleRefeicao(this)">
+          <div class="info">
+            <div class="nome">Ceia</div>
+            <div class="horario">22:00</div>
+          </div>
+          <button class="toggle">⌄</button>
+          <div class="status pending" onclick="toggleStatus(event, this)"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script> 
+    function toggleRefeicao(element) {
+      element.classList.toggle('active');
+    }
+
+    function toggleStatus(event, el) {
+      event.stopPropagation();
+      el.classList.toggle("check");
+      el.classList.toggle("pending");
+    }
+  </script>
+{% endblock %}

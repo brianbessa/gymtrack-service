@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+{% load static %}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}GymTrack{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/sidebar-nutricionista.css' %}">
+  <link rel="stylesheet" href="{% static 'css/base-nutricionista.css' %}">
+  {% block extra_css %}{% endblock %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="container" style="display: flex; height: 100vh;">
+    {% include 'components/sidebar-nutricionista.html' %}
+    {% block content %}{% endblock %}
+  </div>
+
+  <div class="profile-overlay" id="profileOverlay">
+    <div class="profile-card">
+      <button class="close-btn" id="closeProfile">&times;</button>
+
+      <div class="profile-top">
+        <h3>{{ request.user.get_full_name|default:request.user.username }}</h3>
+      </div>
+
+      <div class="profile-info">
+        <div class="info-item">
+          <i class="fas fa-mars"></i>
+          <div>
+            <span class="label">Gênero</span>
+            <strong>{{ profile.genero }}</strong>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-chart-line"></i>
+          <div>
+            <span class="label">Nv. de atividade física</span>
+            <strong>{{ profile.experiencia }}</strong>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-birthday-cake"></i>
+          <div>
+            <span class="label">Nascimento</span>
+            <strong>{{ profile.data_nascimento|date:"d/m/Y" }}</strong>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-dumbbell"></i>
+          <div class="info-label">
+            <span class="label">Experiência com treino</span>
+            <input type="text" class="editable-field" readonly value="{{ profile.experiencia }}" data-field="experiencia_treino" />
+          </div>
+          <button class="edit-btn" onclick="enableEdit(this)">
+            <i class="fas fa-pen"></i>
+          </button>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-phone"></i>
+          <div>
+            <span class="label">Celular</span>
+            <strong>{{ profile.telefone }}</strong>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-utensils"></i>
+          <div>
+            <span class="label">Restrições alimentares</span>
+            <strong><a href="#">Visualizar <i class="fas fa-eye"></i></a></strong>
+          </div>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-envelope"></i>
+          <div>
+            <span class="label">E-mail</span>
+            <strong>{{ request.user.email }}</strong>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'home' %}" class="logout-btn">Sair</a>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('collapsed');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const profileBtn = document.querySelector('.user');
+      const container = document.querySelector('.container');
+      const overlay = document.getElementById('profileOverlay');
+      const closeBtn = document.getElementById('closeProfile');
+
+      if (profileBtn) {
+        profileBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          container.classList.add('blurred');
+          overlay.style.display = 'flex';
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+          container.classList.remove('blurred');
+          overlay.style.display = 'none';
+        });
+      }
+    });
+
+    function enableEdit(button) {
+      const container = button.closest('.info-item');
+      const input = container.querySelector('.editable-field');
+      input.removeAttribute('readonly');
+      input.focus();
+
+      input.addEventListener('blur', () => {
+        input.setAttribute('readonly', true);
+        saveField(input.dataset.field, input.value);
+    });
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          input.blur();
+        }
+      });
+    }
+
+  function saveField(fieldName, value) {
+    fetch("{% url 'atualizar_perfil' %}", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+      body: JSON.stringify({ field: fieldName, value: value }),
+    })
+    .then(response => {
+      if (!response.ok) throw new Error("Erro ao salvar.");
+      return response.json();
+    })
+    .then(data => {
+      console.log("Campo salvo com sucesso:", data);
+    })
+    .catch(error => {
+      alert("Erro ao salvar campo.");
+      console.error(error);
+    });
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background-color: white;
+}
+
+.warning {
+    background-color: #ffe58a;
+    padding: 10px;
+    text-align: center;
+    font-weight: 500;
+    border-bottom: 1px solid #ccc;
+    color: #000;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px 60px;
+}
+
+.left {
+    width: 50%;
+}
+
+.logo img {
+    width: 50px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    color: gray;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.line {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.info p {
+    margin-bottom: 4px;
+}
+
+.pix {
+    margin: 20px 0;
+}
+
+.pix img {
+    width: 80px;
+}
+
+.qrcode img {
+    width: 250px;
+    border: 4px solid #000;
+}
+
+.right {
+    width: 40%;
+}
+
+.card {
+    background: linear-gradient(to bottom, #4189f5, #263973);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    margin-bottom: 30px;
+}
+
+.card h2 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.card h3 {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+.summary {
+    font-size: 16px;
+}
+
+.summary p {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.summary .total {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.summary hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 6px 0;
+}

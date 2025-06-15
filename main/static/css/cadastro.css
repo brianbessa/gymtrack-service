@@ -1,0 +1,139 @@
+* {
+box-sizing: border-box;
+font-family: 'Segoe UI', sans-serif;
+margin: 0;
+padding: 0;
+}
+
+body {
+  display: flex;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.left-panel {
+  flex: 0.42;
+  background: url('../img/cadastro_fundo.png') no-repeat center center;
+  background-size: cover;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.8); 
+}
+
+.left-panel h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.left-panel p {
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.right-panel {
+  flex: 0.58;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.logo-container {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 70px;
+  height: 70px;
+}
+
+.logo-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform: translateX(-20px);
+}
+
+.right-panel h2 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 0.3rem;
+}
+
+.right-panel h2 span {
+  color: #3366ff;
+}
+
+.subtext {
+  font-size: 0.85rem;
+  margin-bottom: 2rem;
+  color: #555;
+  text-align: center;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #a0c4ff;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+  grid-column: 1 / -1;
+}
+
+.confirm-button {
+  grid-column: 1 / -1;
+  background-color: #66a1ff; 
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-button:hover {
+  background: #1a53cc;
+}
+
+.icon {
+  margin-right: 0.3rem;
+}
+
+form {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.form-grid div {
+  display: flex;
+  flex-direction: column;
+}

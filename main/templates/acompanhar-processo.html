@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Notificações - GymTrack{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/acompanhar-processo.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main class="main-content">
+    <h2>Seu Progresso</h2>
+
+      <div class="toggle-buttons">
+        <a href="#" class="toggle active">CARGAS</a>
+        <a href="#" class="toggle">MEDIÇÕES</a>
+      </div>
+
+      <div class="filters">
+        <select>
+          <option selected>Supino reto</option>
+        </select>
+        <select>
+          <option selected>Últimos 30 dias</option>
+        </select>
+      </div>
+
+      <div class="stats">
+        <div>
+          <strong>90 kg</strong>
+          <span>Carga máxima</span>
+        </div>
+        <div>
+          <strong>292</strong>
+          <span>Volume total (séries x repetição)</span>
+        </div>
+        <div>
+          <strong>10</strong>
+          <span>Treinos</span>
+        </div>
+      </div>
+
+      <div class="chart-section">
+        <h3>CARGA X TEMPO</h3>
+        <img src="carga-tempo-exemplo.png" alt="Gráfico de Carga x Tempo" />
+      </div>
+
+      <div class="bottom-section">
+        <div class="series">
+          <h3>SÉRIES X REPETIÇÕES</h3>
+          <img src="series-repeticoes-exemplo.png" alt="Gráfico de Séries x Repetições" />
+        </div>
+        <div class="analise">
+          <h3>ANÁLISE DE EVOLUÇÃO</h3>
+          <ul>
+            <li>✅ Você aumentou 20kg no supino nos últimos 30 dias.</li>
+            <li>📊 Seu volume total cresceu 12% desde o último mês.</li>
+            <li>🎯 Próximo objetivo: 95kg até <strong>25 de maio</strong>.</li>
+          </ul>
+        </div>
+      </div>
+  </main>
+{% endblock %}

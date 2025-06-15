@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #fff;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+}
+
+
+.left-panel {
+  flex: 1;
+  position: relative;
+  background: url('../img/nutricionista-fundo.png') no-repeat center center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6); /* escurece a imagem */
+}
+
+.left-content {
+  position: relative;
+  color: white;
+  text-align: center;
+  z-index: 1;
+}
+
+.left-content h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.left-content p {
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.right-panel {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-panel a .logo {
+  transform: translateX(330px);
+}
+
+.logo {
+  margin-top: -50px;
+  transform: translateY(-75px);
+  width: 100px;
+  align-self: flex-end;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.highlight {
+  color: #4e7efc;
+}
+
+.subtext {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.form {
+  width: 100%;
+  max-width: 520px;
+}
+
+.input-group {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.input-icon {
+  position: relative;
+  flex: 1;
+}
+
+.input-icon i,
+.currency {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.input-icon input {
+  width: 100%;
+  padding: 12px 12px 12px 36px;
+  border: 1px solid #cbd5e1;
+  border-radius: 5px;
+  background-color: #f1f5f9;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+label {
+  font-size: 0.9rem;
+  margin: 10px 0 5px;
+  display: block;
+  color: #333;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background: #4e7efc;
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+}
+
+button:hover {
+  background: #3b6de0;
+}

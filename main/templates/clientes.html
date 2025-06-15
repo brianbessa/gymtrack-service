@@ -1,0 +1,103 @@
+{% extends "base-nutricionista.html" %}
+{% load static %}
+
+{% block title %}Meus Clientes - GymTrack{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/clientes.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="tabela-clientes-container">
+
+  <div class="barra-pesquisa">
+    <input type="text" id="filtroClientes" placeholder="Pesquisar cliente" onkeyup="filtrarClientes()">
+  </div>
+
+  {% if clientes %}
+    <table class="tabela-clientes-estilo-db" id="tabelaClientes">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Email</th>
+          <th>Objetivo Principal</th>
+          <th>Experiência</th>
+          <th>Enviar mensagem</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cliente in clientes %}
+          <tr>
+            <td>{{ cliente.user.get_full_name|default:cliente.user.username }}</td>
+            <td>{{ cliente.user.email }}</td>
+            <td>{{ cliente.user.profile.objetivo }}</td>
+            <td>{{ cliente.user.profile.experiencia }}</td>
+            <td>
+            <img src="{% static 'img/sendmsg.png' %}" alt="Enviar mensagem" class="icon-acao" style="cursor:pointer;" onclick="mostrarFormulario({{ cliente.user.id }})">
+
+            <!-- Formulário oculto -->
+            <div id="formulario-msg-{{ cliente.user.id }}" class="formulario-msg" style="display: none; margin-top: 10px;">
+                <form method="POST" action="{% url 'enviar_mensagem' cliente.user.id %}">
+                {% csrf_token %}
+                <input type="text" name="titulo" placeholder="Título" required style="width: 100%; margin-bottom: 5px;">
+                <textarea name="descricao" placeholder="Mensagem..." rows="3" required style="width: 100%;"></textarea>
+                <div style="margin-top: 5px;">
+                    <button type="submit" style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; border-radius: 4px;">Enviar</button>
+                    <button type="button" onclick="esconderFormulario({{ cliente.user.id }})" style="background-color: #ccc; padding: 5px 10px; border: none; border-radius: 4px; margin-left: 5px;">Cancelar</button>
+                </div>
+                </form>
+            </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Nenhum cliente cadastrado.</p>
+  {% endif %}
+</div>
+
+<script>
+  function filtrarClientes() {
+    const input = document.getElementById("filtroClientes");
+    const filtro = input.value.toLowerCase();
+    const tabela = document.getElementById("tabelaClientes");
+    const linhas = tabela.getElementsByTagName("tr");
+
+    for (let i = 1; i < linhas.length; i++) {
+      const colunas = linhas[i].getElementsByTagName("td");
+      let encontrou = false;
+
+      for (let j = 0; j < colunas.length - 1; j++) {
+        const texto = colunas[j].textContent || colunas[j].innerText;
+        if (texto.toLowerCase().indexOf(filtro) > -1) {
+          encontrou = true;
+          break;
+        }
+      }
+
+      linhas[i].style.display = encontrou ? "" : "none";
+    }
+  }
+
+    function mostrarFormulario(clienteId) {
+        const form = document.getElementById(`formulario-msg-${clienteId}`);
+        form.style.display = "block";
+    }
+
+    function esconderFormulario(clienteId) {
+        const form = document.getElementById(`formulario-msg-${clienteId}`);
+        form.style.display = "none";
+    }
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'success' and message == 'mensagem_enviada' %}
+                alert("Mensagem enviada com sucesso!");
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+
+{% endblock %}

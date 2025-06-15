@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load static %}    
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Academia</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="logo-fixed">
+    <a href="{% url 'home' %}">
+        <img src="{% static 'img/logo.png' %}" alt="Logo Academia" style="width: 100px;">
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="login-container">
+      <h2>LOGIN</h2>
+      <div class="social-login">
+        <button><img src="https://img.icons8.com/ios-filled/30/000000/facebook--v1.png"/></button>
+        <button><img src="https://img.icons8.com/ios-filled/30/000000/google-logo.png"/></button>
+      </div>
+      <p>ou use o seu usuário:</p>
+      <form method="post">
+        {% csrf_token %}
+
+        {% if form.errors %}
+          <p style="color: red;">Usuário ou senha inválidos</p>
+        {% endif %}
+
+        <div class="input-box">
+          {{ form.username }}
+        </div>
+        <div class="input-box">
+          {{ form.password }}
+        </div>
+
+        <div class="options">
+          <label><input type="checkbox" name="remember"> Manter-me logado</label>
+          <a href="#">Esqueceu sua senha?</a>
+        </div>
+
+        <button class="btn" type="submit">Entrar</button>
+      </form>
+    </div>
+
+    <div class="welcome-container">
+      <h2>Bem-vindo!</h2>
+      <p>Informe seus dados para começar uma jornada conosco</p>
+      <a href="{% url 'cadastro' %}">
+        <button class="btn-outline">Criar nova conta</button>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Notificações - GymTrack{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/treinos-personalizados.css' %}">
+{% endblock %}
+
+{% block content %}
+  <main class="main-content">
+    <h2>PLANILHA DE TREINO</h2>
+
+      <div class="toggle-treino">
+        <button class="active">TREINO A</button>
+        <button>TREINO B</button>
+        <button>TREINO C</button>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="exercicios">
+          <div class="exercicio">
+            <img src="https://via.placeholder.com/50" alt="Supino reto" />
+            <div class="info">
+              <strong>Supino reto</strong>
+              <span>Peitoral</span>
+            </div>
+            <div class="dados">
+              <span>3 <small>Séries</small></span>
+              <span>12 <small>Repetições</small></span>
+              <span>120 <small>Segundos</small></span>
+            </div>
+            <button class="edit"><i class="fas fa-pen"></i></button>
+          </div>
+
+        </div>
+
+        <div class="side-info">
+          <div class="divisao">
+            <h3>DIVISÃO SEMANAL <i class="fas fa-calendar-alt"></i></h3>
+            <div class="dias">
+              <span>DOM<br>A</span>
+              <span>SEG<br>B</span>
+              <span>TER<br>C</span>
+              <span>QUA<br>X</span>
+              <span>QUI<br>A</span>
+              <span>SEX<br>X</span>
+              <span>SAB<br>A</span>
+            </div>
+          </div>
+
+          <div class="avaliacao" id="avaliacao">
+            <p>Nos avalie:</p>
+            <div class="notas">
+              <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+            </div>
+            <p>Sua opinião nos ajuda a melhorar!</p>
+          </div>
+
+          <button class="renovar">CLIQUE AQUI PARA RENOVAR O TREINO</button>
+        </div>
+      </div>
+  </main>
+
+  <script>
+    const notas = document.querySelectorAll('.notas span');
+    const avaliacao = document.getElementById('avaliacao');
+    notas.forEach(nota => {
+      nota.addEventListener('click', () => {
+        avaliacao.style.display = 'none';
+      });
+    });
+  </script>
+{% endblock %}

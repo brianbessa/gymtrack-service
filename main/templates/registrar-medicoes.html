@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Registrar Cargas - GymTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/registrar-medicoes.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main-content">
+
+
+  <div class="tabs-filter-wrapper">
+    <div class="tabs-container">
+      <a href="{% url 'registrar-cargas' %}" class="tab {% if active_tab == 'cargas' %}active{% endif %}">Cargas</a>
+      <a href="{% url 'registrar-medicoes' %}" class="tab {% if active_tab == 'medicoes' %}active{% endif %}">Medições</a>
+    </div>
+  </div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Pesquisar" onkeyup="filtrarExercicios()">
+  </div>
+
+  <div class="cards-container" id="cardsContainer">
+    {% for item in pch %}
+    <a href="#" class="card">
+      <div class="card-info">
+        <h3>{{ item.nome }}</h3>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+
+</main>
+
+<script>
+
+</script>
+{% endblock %}

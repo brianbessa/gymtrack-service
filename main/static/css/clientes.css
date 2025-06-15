@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f5f5;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.tabela-clientes-container {
+  width: 95%;
+  max-width: none;
+  margin-left: 30px;
+  margin-top: 30px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Barra de Pesquisa */
+.barra-pesquisa {
+  margin-bottom: 20px;
+}
+
+.barra-pesquisa input {
+  padding: 10px;
+  width: 250px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.tabela-clientes-estilo-db {
+  width: 97%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.tabela-clientes-estilo-db thead {
+  background-color: #f9f9f9;
+}
+
+.tabela-clientes-estilo-db th,
+.tabela-clientes-estilo-db td {
+  padding: 12px 14px;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.tabela-clientes-estilo-db th {
+  font-weight: bold;
+  color: #444;
+}
+
+.tabela-clientes-estilo-db tr:hover {
+  background-color: #f0f8ff;
+}
+
+.icon-acao {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.icon-acao:hover {
+  opacity: 1;
+}

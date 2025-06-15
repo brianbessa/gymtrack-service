@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static tz %}
+
+{% block title %}Notificações{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/notificacao.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+  <input type="text" id="searchInput" placeholder="Buscar notificações" class="search-bar" style="flex: 0.4;">
+  <button id="marcarTodasBtn" style="padding: 8px 12px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; transform: translateY(-14px); margin-right: 22px;">
+    Marcar todas como lidas
+  </button>
+</div>
+
+<div class="notificacao-lista">
+  {% for n in notificacao %}
+    <div class="notificacao-container">
+      <div class="notificacao">
+        <input type="checkbox" class="marcar-lida" />
+        <div class="notificacao-icone">
+          <i class="fas fa-bell"></i>
+        </div>
+        <div class="notificacao-info">
+          <div class="notificacao-titulo">{{ n.titulo }}</div>
+          <div class="notificacao-mensagem">{{ n.mensagem }}</div>
+        </div>
+        {% localtime on %}
+        <div class="notificacao-hora-data">
+          {{ n.data_envio|time:"H:i" }}<br>
+          {{ n.data_envio|date:"d/m/Y" }}
+        </div>
+        {% endlocaltime %}
+      </div>
+    </div>
+  {% empty %}
+    <p style="margin: 20px">Você ainda não tem notificações.</p>
+  {% endfor %}
+</div>
+
+<script>
+  const sidebar = document.querySelector(".sidebar");
+  const notificacoes = document.querySelectorAll(".notificacao-container");
+
+  const ajustarMargem = () => {
+    const larguraSidebar = sidebar.offsetWidth;
+    notificacoes.forEach(el => {
+      el.style.marginLeft = `${larguraSidebar + 20}px`;
+    });
+  };
+
+  document.getElementById('searchInput').addEventListener('keyup', function () {
+    const filtro = this.value.toLowerCase();
+    const notificacoes = document.querySelectorAll('.notificacao-container');
+
+    notificacoes.forEach(function (el) {
+      const texto = el.textContent.toLowerCase();
+      el.style.display = texto.includes(filtro) ? 'block' : 'none';
+    });
+  });
+
+  document.querySelectorAll('.marcar-lida').forEach(function (checkbox) {
+    checkbox.addEventListener('change', function () {
+      const notificacao = this.closest('.notificacao');
+      if (this.checked) {
+        notificacao.classList.add('apagada');
+      } else {
+        notificacao.classList.remove('apagada');
+      }
+    });
+  });
+
+  document.getElementById('marcarTodasBtn').addEventListener('click', function () {
+    document.querySelectorAll('.marcar-lida').forEach(function (checkbox) {
+      checkbox.checked = true;
+      checkbox.closest('.notificacao').classList.add('apagada');
+    });
+  });
+
+</script>
+
+{% endblock %}

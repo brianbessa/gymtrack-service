@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+{% load static %}  
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro - GymTrack</title>
+  <link rel="stylesheet" href="{% static 'css/cadastro.css' %}"/>
+</head>
+<body>
+  <div class="left-panel">
+    <h1>GymTrack</h1>
+    <p>O caminho inteligente para sua evolução.</p>
+  </div>
+
+  <div class="right-panel">
+    <div class="logo-container">
+      <a href="{% url 'home' %}">
+        <img src="{% static 'img/logo.png' %}" alt="Logo GymTrack" style="width: 100px;" />
+      </a>
+    </div>
+
+    <h2>EFETUE SEU <span>REGISTRO</span></h2>
+    <p class="subtext">Você está criando uma conta com o plano Plus<br>Valor:<span style="color: #165200; font-weight: bold;"> R$ 49,90/mês</span></p>
+    <div class="form-wrapper">
+        <form method="post">
+            {% csrf_token %}
+
+            {% if form.errors %}
+                <div class="error-messages">
+                    <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <div class="form-grid">
+                <div>
+                    <label for="{{ form.username.id_for_label }}">Username:</label>
+                    {{ form.username }}
+                </div>
+                <div>
+                    <label for="{{ form.email.id_for_label }}">Email:</label>
+                    {{ form.email }}
+                </div>
+
+                <div>
+                    <label for="{{ form.password1.id_for_label }}">Password:</label>
+                    {{ form.password1 }}
+                </div>
+                <div>
+                    <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+                    {{ form.password2 }}
+                </div>
+
+                <div>
+                    <label for="{{ form.peso.id_for_label }}">Peso:</label>
+                    {{ form.peso }}
+                </div>
+                <div>
+                    <label for="{{ form.altura.id_for_label }}">Altura:</label>
+                    {{ form.altura }}
+                </div>
+
+                <div>
+                    <label for="{{ form.data_nascimento.id_for_label }}">Data nascimento:</label>
+                    {{ form.data_nascimento }}
+                </div>
+                <div>
+                    <label for="{{ form.experiencia.id_for_label }}">Experiência:</label>
+                    {{ form.experiencia }}
+                </div>
+
+                <div class="full-width">
+                    <label for="{{ form.objetivo.id_for_label }}">Objetivo:</label>
+                    {{ form.objetivo }}
+                </div>
+
+                <div class="form-grid full-width">
+                    <button type="submit" class="confirm-button">Confirmar e pagar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

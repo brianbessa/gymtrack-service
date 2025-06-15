@@ -1,0 +1,58 @@
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a href="{% url 'home' %}">
+      <div class="logo" style="font-family: 'Roboto', sans-serif;">
+        <span class="full-logo">Gym<span class="logo-text">Track</span></span>
+        <span class="collapsed-logo">G</span>
+      </div>
+    </a>
+  </div>
+
+  <nav>
+    <ul>
+      <li class="{% if request.path == '/notificacao/' %}active{% endif %}">
+        <a href="{% url 'notificacao' %}">
+          <i class="fas fa-bell"></i> <span class="menu-text">Notificações</span>
+        </a>
+      </li>
+
+      <li class="{% if request.path == '/registrar-cargas/' %}active{% endif %}">
+        <a href="{% url 'registrar-cargas' %}">
+          <i class="fas fa-ruler-combined"></i> <span class="menu-text">Registrar medidas e cargas</span>
+        </a>
+      </li>
+
+      <li class="{% if request.path == '/acompanhar-processo/' %}active{% endif %}">
+        <a href="{% url 'acompanhar-processo' %}">
+          <i class="fas fa-chart-line"></i> <span class="menu-text">Acompanhar processo</span>
+        </a>
+      </li>
+
+      <li class="{% if request.path == '/treinos-personalizados/' %}active{% endif %}">
+        <a href="{% url 'treinos-personalizados' %}">
+          <i class="fas fa-dumbbell"></i> <span class="menu-text">Treinos personalizados</span>
+        </a>
+      </li>
+
+      <li class="{% if request.path == '/plano-nutricional/' %}active{% endif %}">
+        <a href="{% url 'plano-nutricional' %}">
+          <i class="fas fa-burger"></i> <span class="menu-text">Plano nutricional</span>
+        </a>
+      </li>
+
+      <li class="{% if request.path == '/nutricionista/' %}active{% endif %}">
+        <a href="{% url 'nutricionista' %}">
+          <i class="fas fa-user-md"></i> <span class="menu-text">Nutricionista</span>
+        </a>
+      </li>
+
+    </ul>
+  </nav>
+  <a href="#" class="user">
+    <i class="fas fa-user-circle"></i>
+    <span class="menu-text">{{ request.user.username }}</span>
+  </a>
+</aside>

@@ -1,0 +1,34 @@
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <button class="menu-toggle" onclick="toggleSidebar()">
+      <i class="fas fa-bars"></i>
+    </button>
+    <a href="{% url 'home' %}">
+      <div class="logo" style="font-family: 'Roboto', sans-serif;">
+        <span class="full-logo">Gym<span class="logo-text">Track</span></span>
+        <span class="collapsed-logo">G</span>
+      </div>
+    </a>
+  </div>
+
+  <nav>
+    <ul>
+      <li class="{% if request.path == '/notificacao-nutricionista/' %}active{% endif %}">
+        <a href="{% url 'notificacao-nutricionista' %}">
+          <i class="fas fa-bell"></i> <span class="menu-text">Notificações</span>
+        </a>
+      </li>
+
+      <li class="{% if request.path == '/clientes/' %}active{% endif %}">
+        <a href="{% url 'clientes' %}">
+          <i class="fas fa-envelope-open-text"></i> <span class="menu-text">Emitir alertas aos clientes</span>
+        </a>
+    </li>
+
+    </ul>
+  </nav>
+  <a href="#" class="user">
+    <i class="fas fa-user-circle"></i>
+    <span class="menu-text">Nutri. {{ request.user.username }}</span>
+  </a>
+</aside>

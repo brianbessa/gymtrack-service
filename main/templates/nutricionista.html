@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Nutricionistas - GymTrack{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/nutricionista.css' %}">
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <main class="main-content">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Procurar nutricionista" />
+      </div>
+
+    <div class="cards-container">
+      {% for nutricionista in nutricionistas %}
+        <div class="card" onclick="openModal('{{ nutricionista.id }}')">
+          <h3 class="nutricionista-nome">{{ nutricionista.user.username }}</h3>
+          <p>Online recentemente</p>
+          <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐ <span>(0)</span></div>
+          {% if not cliente.nutricionista %}
+            <button class="btn">AGENDAR NUTRICIONISTA</button>
+          {% else %}
+            <p>Você já está vinculado ao nutricionista: <strong>{{ cliente.nutricionista.user.username }}</strong></p>
+          {% endif %}
+        </div>
+
+        <div class="modal" id="modal-{{ nutricionista.id }}">
+          <div class="modal-content">
+            <span class="close" onclick="closeModal('{{ nutricionista.id }}')">×</span>
+            <div class="modal-body">
+              <img src="{% static 'img/user-default.png' %}" alt="{{ nutricionista.user.get_full_name }}">
+              <div class="info">
+                <h3>{{ nutricionista.user.username }}</h3>
+                <p class="online">Online recentemente</p>
+                <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐ <span>(0)</span></div>
+                <p class="price"><strong>Valor:</strong> R$ {{ nutricionista.valor_consulta }}</p>
+                <p class="desc">
+                  CRN: {{ nutricionista.crn }}<br>
+                  Chave Pix: {{ nutricionista.chave_pix }}
+                </p>
+                {% if not cliente.nutricionista %}
+                  <form method="post" action="{% url 'confirmar_consulta' nutricionista.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn green">CONFIRMAR E PAGAR</button>
+                  </form>
+                {% else %}
+                  <p>Você já contratou um nutricionista.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+    </main>
+  </div>
+
+<script>
+  function openModal(id) {
+    const modal = document.getElementById(`modal-${id}`);
+    if (modal) {
+      modal.style.display = 'flex';
+    }
+  }
+
+  function closeModal(id) {
+    const modal = document.getElementById(`modal-${id}`);
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  const searchInput = document.getElementById('searchInput');
+  searchInput.addEventListener('input', function () {
+    const filter = this.value.toLowerCase();
+    const cards = document.querySelectorAll('.cards-container .card');
+
+    cards.forEach(card => {
+      const nome = card.querySelector('.nutricionista-nome').textContent.toLowerCase();
+      if (nome.includes(filter)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+</script>
+  
+{% endblock %}

@@ -1,0 +1,145 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f5f5f5;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  background: linear-gradient(to bottom, #051937, #003d6e);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+.sidebar h1 {
+  font-size: 1.8rem;
+  margin-bottom: 30px;
+}
+.sidebar h1 span {
+  color: #4e7efc;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar nav ul li {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+.sidebar nav ul li.active,
+.sidebar nav ul li:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  font-weight: bold;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: auto;
+  padding-top: 10px;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+  background-color: #f8f8f8;
+  overflow-y: auto;
+}
+
+.barra-superior {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+}
+.barra-superior input {
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  width: 250px;
+}
+.filtros button {
+  background: #e4e4e4;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 20px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.filtros button.ativo {
+  background: #005cff;
+  color: white;
+}
+
+.linha-tempo .data {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.notificacao {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 15px 0;
+  display: flex;
+  gap: 20px;
+  border: 1px solid #ccc;
+}
+
+.notificacao.simples {
+  align-items: center;
+}
+
+.hora {
+  font-weight: bold;
+  width: 60px;
+}
+
+.conteudo {
+  flex: 1;
+}
+
+.dados-paciente ul {
+  margin: 10px 0;
+  padding-left: 20px;
+}
+
+.upload-box {
+  margin-top: 15px;
+}
+
+.upload-area {
+  margin-top: 8px;
+  padding: 20px;
+  border: 2px dashed #999;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #f1f1f1;
+}
+.upload-area i {
+  font-size: 32px;
+  color: #333;
+}
+.upload-area span {
+  display: block;
+  margin-top: 5px;
+  font-weight: bold;
+}

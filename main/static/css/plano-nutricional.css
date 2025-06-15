@@ -1,0 +1,142 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #f4f4f4;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+  background: #f9f9f9;
+}
+
+.search {
+  width: 100%;
+  max-width: 320px;
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: none;
+  background-color: #e2e2e2;
+  margin-bottom: 25px;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.macro-panel {
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 14px;
+  padding: 25px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  gap: 20px;
+}
+
+.macro {
+  text-align: center;
+  flex: 1;
+}
+
+.macro .circle {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+}
+
+.circle.cal {
+  background: conic-gradient(#f9c86c 0% 70%, #eaeaea 70%);
+}
+
+.circle.carb {
+  background: conic-gradient(#f08080 0% 75%, #eaeaea 75%);
+}
+
+.circle.prot {
+  background: conic-gradient(#87ceeb 0% 50%, #eaeaea 50%);
+}
+
+.refeicoes {
+  background: #ffffff;
+  padding: 20px 25px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.refeicao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f4fbff;
+  padding: 18px 20px;
+  border-radius: 12px;
+  transition: background 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+
+.refeicao:hover {
+  background: #e6f4fc;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.horario {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.nome {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #222;
+}
+
+.toggle {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.refeicao.active .toggle {
+  transform: rotate(180deg);
+}
+
+.status {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-left: 15px;
+  transition: background 0.3s, transform 0.3s;
+  box-shadow: inset 0 0 0 2px #fff;
+}
+
+.status.check {
+  background-color: #4CAF50;
+}
+
+.status.pending {
+  background-color: #888;
+}
+
+.status:hover {
+  filter: brightness(1.2);
+  transform: scale(1.1);
+  cursor: pointer;
+}

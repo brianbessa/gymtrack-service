@@ -1,0 +1,49 @@
+{% extends "base-nutricionista.html" %}
+{% load static %}
+
+{% block title %}Notificações - GymTrack{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/notificacao-nutricionista.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main-content">
+  <div class="barra-superior">
+    <input type="text" placeholder="🔍 Pesquisar notificações" />
+    <div class="filtros">
+      <button class="ativo">Todos</button>
+      <button>Lidos</button>
+      <button>Não lidos</button>
+    </div>
+  </div>
+
+  <div class="linha-tempo">
+    {% if notificacoes %}
+      <div class="data">HOJE</div>
+      {% for notificacao in notificacoes %}
+        <div class="notificacao {% if notificacao.simples %}simples{% endif %}">
+          <div class="hora">{{ notificacao.data_envio|date:"H:i" }}</div>
+          <div class="conteudo">
+            <p><strong>{{ notificacao.titulo }}</strong></p>
+            <p>{{ notificacao.mensagem|safe }}</p>
+
+            {% if "monte uma dieta personalizada" in notificacao.mensagem %}
+            <div class="upload-box">
+              <p>Envie a dieta aqui e siga as instruções conforme indicado:</p>
+              <div class="upload-area">
+                <i class="fas fa-file-alt"></i>
+                <span>TXT</span>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+          <input type="checkbox" />
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="text-align: center; padding: 2rem;">Nenhuma notificação recebida ainda.</p>
+    {% endif %}
+  </div>
+</main>
+{% endblock %}

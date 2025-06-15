@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load static %}  
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymTrack - Checkout</title>
+    <link rel="stylesheet" href="{% static 'css/pagamento.css' %}">
+</head>
+<body>
+
+    <div class="warning">
+        ⚠️ O QR Code gerado expirará em 15 minutos. Conclua o pagamento o quanto antes para garantir sua assinatura do plano Plus
+    </div>
+
+    <div class="container">
+
+        <div class="left">
+            <div class="logo">
+                <img src="logo.png" alt="Logo">
+            </div>
+
+            <h1>Checkout</h1>
+
+            <h3>DETALHES DA COMPRA</h3>
+            <hr class="line">
+
+            <div class="info">
+                <p>Vinicius Marques</p>
+                <p>vinicius@gmail.com</p>
+                <p>R. Ibituruna, 108</p>
+                <p>Maracanã</p>
+                <p>Rio de Janeiro</p>
+            </div>
+
+            <div class="pix">
+                <img src="pix.png" alt="Pix">
+            </div>
+
+            <div class="qrcode">
+                <img src="qrcode.png" alt="QR Code">
+            </div>
+        </div>
+
+        <div class="right">
+            <div class="card">
+                <h2>📄 Plano Plus</h2>
+                <p>Tenha acesso a recursos avançados como visualização do progresso com gráficos personalizados, registro detalhado de medidas e cargas, planos de treino elaborados exclusivamente para você e diversas outras funcionalidades!</p>
+                <h3>R$ 49,90*</h3>
+            </div>
+
+            <div class="summary">
+                <p>Subtotal <span>49,90</span></p>
+                <p>Frete <span>00,00</span></p>
+                <hr>
+                <p class="total">Total <span>49,90</span></p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

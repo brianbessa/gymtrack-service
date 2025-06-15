@@ -1,0 +1,231 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GymTrack</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+
+<body>
+    <section class="banner" id="home">
+        <div class="overlay">
+            <header class="topo">
+                <img src="{% static 'img/logo_home.png' %}" alt="Logo GymTrack" class="logo">
+                <nav>
+                    <a href="#home">HOME</a>
+                    <a href="#calculadoras">CALCULADORAS E TABELA NUTRICIONAL</a>
+                    <a href="#sobre">SOBRE</a>
+                    <a href="#servicos">SERVIÇOS</a>
+                </nav>
+                <div class="acesso">
+                    <a href="#" class="btn">
+                        Suporte
+                    </a>
+                    <a href="{% url 'login' %}" class='btn'>
+                        <b>Cadastre-se </b>ou<br>
+                        <b>faça seu login</b>
+                    </a>
+                </div>
+            </header>
+            <div class="conteudo-banner">
+                <div class="texto-banner">
+                    <h1>MAIS <span style="color: #3494e6; font-weight: 700;">CONTROLE</span>. MAIS <span style="color: #3494e6; font-weight: 700;">PROGRESSO</span>.</h1>
+                    <p>A <span style="font-weight: 700;">GYMTRACK</span> foca no acompanhamento inteligente dos treinos para maximizar sua evolução</p>
+                    <a href="{% url 'notificacao' %}" class="botao">EXPLORE MAIS</a>
+                </div>
+                <div class="imagem-banner">
+                    <img src="{% static 'img/boneco.png' %}" alt="Homem agachando com pesos">
+                </div>
+            </div>
+        </div>
+    </section>
+
+      <main class="container" id="calculadoras">
+    <section class="card" style="background-color: #f2f2f2;">
+      <h2><img src="{% static 'img/medidor.png' %}" alt="Ícone" class="icon" style="width: 65px;"> Calcular IMC e TMB</h2>
+      <div class="row">
+        <input id="altura" placeholder="Altura (ex.: 170)" />
+        <input id="peso" placeholder="Peso (ex.: 64.5)" style="width: 20px;"/>
+      </div>
+      <div class="row">
+        <input id="idade" placeholder="Idade (ex.: 21)" />
+        <select id="sexo">
+          <option value="">Sexo</option>
+          <option value="masculino">Masculino</option>
+          <option value="feminino">Feminino</option>
+        </select>
+      </div>
+      <div class="atividade">
+        <label><input type="radio" name="atividade" value="1.2" checked> Sedentário</label>
+        <label><input type="radio" name="atividade" value="1.375"> Levemente ativo</label>
+        <label><input type="radio" name="atividade" value="1.55"> Moderadamente ativo</label>
+        <label><input type="radio" name="atividade" value="1.725"> Muito ativo</label>
+        <label><input type="radio" name="atividade" value="1.9"> Extremamente ativo</label>
+      </div>
+      <button onclick="calcularIMCeTMB()">Calcular</button>
+
+      <table>
+        <thead>
+          <tr><th>IMC</th><th>CLASSIFICAÇÃO</th><th>OBESIDADE (GRAU)</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>MENOR QUE 18,5</td><td>MAGREZA</td><td>0</td></tr>
+          <tr><td>ENTRE 18,5 E 24,9</td><td>NORMAL</td><td>0</td></tr>
+          <tr><td>ENTRE 25,0 E 29,9</td><td>SOBREPESO</td><td>I</td></tr>
+          <tr><td>ENTRE 30,0 E 39,9</td><td>OBESIDADE</td><td>II</td></tr>
+          <tr><td>MAIOR QUE 40,0</td><td>OBESIDADE GRAVE</td><td>III</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="card" style="background-color: #f2f2f2;">
+      <h2><img src="{% static 'img/alimento.png' %}" alt="Ícone" class="icon"> Calcular Ingestão de Alimentos</h2>
+      <input id="alimento" placeholder="Informe o alimento desejado" />
+      <input id="quantidade" type="number" placeholder="Quantidade" value="1" />
+      <button onclick="buscarAlimento()">Buscar</button>
+
+      <table id="tabelaAlimento">
+        <thead><tr><th colspan="2">Tabela nutricional</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="resultado" id="resultado"></div>
+
+
+    <section class="sobre" id="sobre">
+        <img src="{% static 'img/sobre.png' %}" alt="Sobre a GymTrack">
+        <div class="texto">
+            <h2>SOBRE NÓS</h2>
+            <h3>GYMTRACK</h3>
+            <p>A GymTrack é uma plataforma inteligente que une tecnologia e ciência do treino para potencializar
+                resultados na academia. Com planos personalizados, acompanhamento de carga, gráficos dinâmicos e suporte
+                de especialistas como nutricionistas,
+                nós oferecemos uma experiência completa para quem leva seus objetivos a sério. Tudo isso em um só lugar
+                — simples, eficiente e feito sob medida para sua evolução.</p>
+        </div>
+    </section>
+
+    <section class="plano" id="servicos">
+    <div class="destaque">
+        <h2>PLANO PLUS</h2>
+        <p>Invista no seu futuro hoje. Assine o plano que transforma esforço em resultados!</p>
+        <h3>R$ 49,90/mês</h3>
+        <a href="{% url 'cadastro' %}">CONTRATAR PLANO</a>
+    </div>
+
+    <span class="seta-baixo"> </span>
+
+    <div class="beneficios">
+        <h3>OS BENEFÍCIOS</h3>
+        <ul>
+            <li>
+                <img src="{% static 'img/icon_carga.png' %}" alt="Acompanhamento">
+                <strong>ACOMPANHAMENTO DE CARGA</strong>
+                <span>Track inteligente da sua progressão com dados precisos de volume e intensidade.</span>
+            </li>
+            <li>
+                <img src="{% static 'img/icon_graficos.png' %}" alt="Gráficos">
+                <strong>GRÁFICOS DINÂMICOS</strong>
+                <span>Visualize seu desempenho em tempo real com gráficos que mostram sua evolução muscular.</span>
+            </li>
+            <li>
+                <img src="{% static 'img/icon_plano.png' %}" alt="Plano">
+                <strong>PLANO PERSONALIZADO</strong>
+                <span>Algoritmos avançados para montar o treino ideal, adaptado aos seus objetivos.</span>
+            </li>
+            <li>
+                <img src="{% static 'img/icon_nutri.png' %}" alt="Nutricionista">
+                <strong>ACOMPANHAMENTO COM NUTRICIONISTA</strong>
+                <span>Conecte-se com especialistas e alinhe sua alimentação aos objetivos com precisão científica.</span>
+            </li>
+        </ul>
+    </div>
+
+    <div class="rodape-cta">
+        <p>Seja parte da transformação. Cadastre-se como nutricionista e leve seu conhecimento a quem busca resultado de verdade!</p>
+        <a href="{% url 'cadastro-nutricionista' %}">CADASTRE-SE PARA TRABALHAR CONOSCO</a>
+    </div>
+    </section>
+
+    <script>
+        function calcularIMCeTMB() {
+        const altura = parseFloat(document.getElementById('altura').value);
+        const peso = parseFloat(document.getElementById('peso').value);
+        const idade = parseInt(document.getElementById('idade').value);
+        const sexo = document.getElementById('sexo').value;
+        const atividade = parseFloat(document.querySelector('input[name="atividade"]:checked').value);
+
+        if (!altura || !peso || !idade || !sexo) {
+        alert("Preencha todos os campos!");
+        return;
+        }
+
+        const alturaM = altura / 100;
+        const imc = peso / (alturaM * alturaM);
+
+        let tmb;
+        if (sexo === "masculino") {
+        tmb = 88.36 + (13.397 * peso) + (4.799 * altura) - (5.677 * idade);
+        } else {
+        tmb = 447.6 + (9.2 * peso) + (3.1 * altura) - (4.3 * idade);
+        }
+
+        const tmbTotal = tmb * atividade;
+
+        let classificacao = "";
+        if (imc < 18.5) classificacao = "Magreza (Grau 0)";
+        else if (imc < 25) classificacao = "Normal (Grau 0)";
+        else if (imc < 30) classificacao = "Sobrepeso (Grau I)";
+        else if (imc < 40) classificacao = "Obesidade (Grau II)";
+        else classificacao = "Obesidade Grave (Grau III)";
+
+        document.getElementById('resultado').style.display = 'block';
+        document.getElementById('resultado').innerHTML = `
+        <strong>Resultado:</strong><br>
+        ✅ <b>IMC:</b> ${imc.toFixed(2)} ${classificacao}<br>
+        🔥 <b>TMB:</b> ${tmb.toFixed(2)} kcal/dia<br>
+        🏃‍♂️ <b>Gasto Diário com Atividade:</b> ${tmbTotal.toFixed(2)} kcal/dia
+        `;
+    }
+
+    async function buscarAlimento() {
+      const nome = document.getElementById('alimento').value;
+      const quantidade = parseFloat(document.getElementById('quantidade').value) || 1;
+      const tabela = document.getElementById('tabelaAlimento').querySelector("tbody");
+
+      if (!nome) return alert("Digite um alimento!");
+
+      tabela.innerHTML = "<tr><td colspan='2'>Buscando...</td></tr>";
+
+      try {
+        const res = await fetch(`https://api.calorieninjas.com/v1/nutrition?query=${quantidade} ${nome}`, {
+          headers: { 'X-Api-Key': '' } //implementar api no futuro
+        });
+        const data = await res.json();
+        const alimento = data.items[0];
+
+        if (!alimento) {
+          tabela.innerHTML = "<tr><td colspan='2'>Alimento não encontrado</td></tr>";
+          return;
+        }
+
+        tabela.innerHTML = `
+          <tr><td>Calorias</td><td>${alimento.calories.toFixed(2)} kcal</td></tr>
+          <tr><td>Carboidratos</td><td>${alimento.carbohydrates_total_g.toFixed(2)} g</td></tr>
+          <tr><td>Proteínas</td><td>${alimento.protein_g.toFixed(2)} g</td></tr>
+          <tr><td>Gorduras totais</td><td>${alimento.fat_total_g.toFixed(2)} g</td></tr>
+          <tr><td>Gorduras saturadas</td><td>${alimento.fat_saturated_g.toFixed(2)} g</td></tr>
+        `;
+      } catch (err) {
+        tabela.innerHTML = "<tr><td colspan='2'>Erro na busca</td></tr>";
+        console.error(err);
+      }
+    }
+    </script>
+</body>
+
+</html>

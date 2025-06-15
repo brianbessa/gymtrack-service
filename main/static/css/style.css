@@ -1,0 +1,413 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+}
+
+h1, h2, h3, p {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.banner {
+    position: relative;
+    height: 100vh;
+    background: url('../img/banner_fundo.png') no-repeat center center/cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+    overflow: hidden;
+}
+
+.overlay {
+    background-color: rgba(0, 0, 0, 0.6);
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 10px 30px;
+}
+
+.logo {
+    height: 60px;
+}
+
+nav {
+    display: flex;
+    gap: 25px;
+    font-weight: bold;
+}
+
+nav a {
+    color: white;
+    font-size: 14px;
+}
+
+.acesso {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 25px;
+    font-size: 12px;
+    color: white;
+    margin-right: 40px;
+}
+
+.acesso a {
+    color: white;
+}
+
+.conteudo-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 80px;
+    gap: 60px;
+    height: 100%;
+}
+
+.conteudo-banner h1 {
+    font-size: 2.8em;
+    font-weight: 900;
+    margin-bottom: 20px;
+}
+
+.conteudo-banner p {
+    font-size: 1.4em;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+.botao {
+    background: linear-gradient(to right, #1e90ff, #0059ff);
+    padding: 12px 24px;
+    border-radius: 30px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    display: inline-block;
+    transition: background 0.3s;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    text-align: center;
+    max-width: fit-content;
+}
+
+.botao:hover {
+    background: linear-gradient(to right, #0059ff, #1e90ff);
+    transform: scale(1.05);
+}
+
+.calculadoras {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background: #f4f4f4;
+    padding: 60px 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    width: 400px;
+    margin: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+    color: #1e90ff;
+    margin-bottom: 20px;
+}
+
+.card input, .card select, .card button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.atividade {
+    margin: 10px 0;
+}
+
+.atividade label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.resultado {
+    background: #e6f7ff;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 15px;
+}
+
+.sobre {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    padding: 60px 40px;
+    color: white;
+    flex-wrap: wrap;
+    z-index: 1;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.sobre::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                url('../img/sobre_fundo.png') no-repeat center center/cover;
+    z-index: -1;
+    opacity: 1;
+}
+
+.sobre img {
+    width: 300px;
+    border-radius: 12px;
+    z-index: 1;
+}
+
+.sobre .texto {
+    max-width: 550px;
+    text-align: justify;
+    z-index: 1;
+}
+
+.sobre h2 {
+    font-size: 2em;
+    margin-bottom: 5px;
+    color: white;
+}
+
+.sobre h3 {
+    color: white;
+    margin-bottom: 15px;
+    font-weight: bold;
+    letter-spacing: 8px;
+}
+
+.sobre p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.plano {
+    position: relative;
+    color: white;
+    background: url('../img/plano_fundo.png') no-repeat center center/cover;
+    padding: 60px 20px 0;
+    text-align: center;
+    overflow: hidden;
+}
+
+.plano::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 50, 0.6); /* escurece o fundo */
+    z-index: 0;
+}
+
+.plano * {
+    position: relative;
+    z-index: 1;
+}
+
+.destaque h2 {
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.destaque p {
+    color: #e0e0e0;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.destaque h3 {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.destaque button {
+    background-color: #1e90ff;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.seta-baixo {
+    font-size: 30px;
+    color: white;
+    margin: 40px auto 20px;
+    display: block;
+}
+
+.beneficios {
+    background-color: white;
+    padding: 60px 20px 30px;
+    text-align: center;
+}
+
+.beneficios h3 {
+    color: #555;
+    font-size: 1.4em;
+    margin-bottom: 30px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.beneficios ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.beneficios li {
+    width: 220px;
+    background: none;
+    text-align: center;
+    color: #111;
+}
+
+.beneficios li img {
+    background: #ddd;
+    padding: 20px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.beneficios li strong {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.beneficios li span {
+    font-size: 13px;
+    color: #666;
+}
+
+.rodape-cta {
+    background: #000;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+.rodape-cta p {
+    margin-bottom: 15px;
+}
+
+.rodape-cta button {
+    background-color: #00aaff;
+    border: none;
+    color: white;
+    padding: 10px 25px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.conteudo-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 30px;
+    gap: 30px;
+    margin-top: 40px;
+    transform: translateY(-100px);
+}
+
+.texto-banner {
+    max-width: 50%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+
+
+.texto-banner h1 {
+    font-size: 1.8em;
+    font-weight: 600;
+    margin-bottom: 20px;
+    white-space: nowrap;
+}
+
+.texto-banner p {
+    font-size: 1.4em;
+    font-weight: 300;
+    line-height: 1.5;
+    margin-bottom: 40px;
+}
+
+.imagem-banner {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.imagem-banner img {
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+    object-fit: contain;
+}
+
+.conteudo-banner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 60px 60px;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.texto-banner {
+    max-width: 600px;
+    flex: 1;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
