@@ -19,13 +19,13 @@
         </a>
       </li>
 
-      <li class="{% if request.path == '/registrar-cargas/' %}active{% endif %}">
+      <li class="{% if request.path == '/registrar-cargas/' or request.path == '/registrar-medicoes/' %}active{% endif %}">
         <a href="{% url 'registrar-cargas' %}">
           <i class="fas fa-ruler-combined"></i> <span class="menu-text">Registrar medidas e cargas</span>
         </a>
       </li>
 
-      <li class="{% if request.path == '/acompanhar-processo-cargas/' %}active{% endif %}">
+      <li class="{% if request.path == '/acompanhar-processo/' or request.path == '/acompanhar-processo-medicoes/' %}active{% endif %}">
         <a href="{% url 'acompanhar-processo-cargas' %}">
           <i class="fas fa-chart-line"></i> <span class="menu-text">Acompanhar processo</span>
         </a>

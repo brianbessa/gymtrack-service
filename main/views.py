@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CadastroForm
-from .models import Profile, Cliente, Nutricionista, Notificacao, Mensagem, Exercicio, RegistroCarga
+from .models import Profile, Cliente, Nutricionista, Notificacao, Mensagem, Exercicio, RegistroCarga, Medicao
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm
 from django.contrib.auth.models import User
@@ -18,6 +18,8 @@ from decimal import Decimal, InvalidOperation
 from django.utils.timezone import localtime
 from django.db.models import Sum
 from django.db.models.functions import TruncDate
+from django.urls import reverse
+from datetime import datetime, timedelta
 
 def home_view(request):
     return render(request, 'home.html')
@@ -68,22 +70,40 @@ def registrar_cargas_view(request):
     exercicios = Exercicio.objects.all()
     return render(request, 'registrar-cargas.html', {'exercicios': exercicios, 'active_tab': 'cargas'})
 
+@login_required
 def registrar_medicoes_view(request):
     pch = [
-        {'nome': 'Braço esquerdo'},
-        {'nome': 'Braço direito'},
-        {'nome': 'Cintura'},
-        {'nome': 'Quadril'},
-        {'nome': 'Coxa direita'},
-        {'nome': 'Coxa esquerda'},
-        {'nome': 'Panturrilha direita'},
-        {'nome': 'Panturrilha esquerda'},
-        {'nome': 'Tórax'},
-        {'nome': 'Ombros'}
+        {'value': 'braco_esquerdo', 'nome': 'Braço esquerdo'},
+        {'value': 'braco_direito', 'nome': 'Braço direito'},
+        {'value': 'cintura', 'nome': 'Cintura'},
+        {'value': 'quadril', 'nome': 'Quadril'},
+        {'value': 'coxa_direita', 'nome': 'Coxa direita'},
+        {'value': 'coxa_esquerda', 'nome': 'Coxa esquerda'},
+        {'value': 'panturrilha_direita', 'nome': 'Panturrilha direita'},
+        {'value': 'panturrilha_esquerda', 'nome': 'Panturrilha esquerda'},
+        {'value': 'peso', 'nome': 'Peso'}
     ]
+
+    if request.method == 'POST':
+        parte = request.POST.get('parteCorpo')
+        valor = request.POST.get('medicaoInput')
+        print("Parte:", parte)
+        print("Valor:", valor)
+
+        if parte and valor:
+            nova_medicao = Medicao.objects.create(
+                usuario=request.user,
+                parte_corpo=parte,
+                valor_cm=valor
+            )
+            print("Salvo:", nova_medicao)
+            return redirect(f"{reverse('registrar-medicoes')}?scroll=tabela")
+
+    medicoes = Medicao.objects.filter(usuario=request.user).order_by('-data_registro')
 
     return render(request, 'registrar-medicoes.html', {
         'pch': pch,
+        'medicoes': medicoes,
         'active_tab': 'medicoes',
     })
 
@@ -135,7 +155,20 @@ def plano_nutricional_view(request):
 
 def acompanhar_processo_cargas_view(request):
     exercicios = Exercicio.objects.all()
-    return render(request, 'acompanhar-processo-cargas.html', {'exercicios': exercicios})
+    return render(request, 'acompanhar-processo-cargas.html', {'exercicios': exercicios, 'active_tab': 'cargas'})
+
+@login_required
+def acompanhar_processo_medicoes_view(request):
+    peso_medicoes = Medicao.objects.filter(
+        usuario=request.user,
+        parte_corpo='peso'
+    ).order_by('-data_registro')
+
+    return render(request, 'acompanhar-processo-medicoes.html', {
+        'partes_corpo': Medicao.PARTE_CORPO_CHOICES,
+        'peso_medicoes': peso_medicoes,
+        'active_tab': 'medicoes',
+    })
 
 def treinos_personalizados_view(request):
     return render(request, 'treinos-personalizados.html')
@@ -289,9 +322,9 @@ def listar_series(request, exercicio_id):
     data = []
     for s in series:
         try:
-            carga = float(s.carga)  # assume que carga é Decimal no banco
+            carga = float(s.carga)
         except (ValueError, TypeError, InvalidOperation):
-            carga = 0  # ou pule esse registro com `continue`
+            carga = 0  
         data.append({
             'id': s.id,
             'carga': carga,
@@ -355,7 +388,7 @@ def grafico_cargas(request, exercicio_id):
 
         # Pega a primeira ocorrência da maior carga
         data_max_carga = registros.filter(carga=max_carga).first()
-        data_max_carga = data_max_carga.data.strftime("%d/%m %H:%M") if data_max_carga else None
+        data_max_carga = data_max_carga.data.strftime("%d/%m") if data_max_carga else None
 
         return JsonResponse({
             'labels': labels,
@@ -392,3 +425,29 @@ def grafico_series_repeticoes(request, exercicio_id):
     except Exception as e:
         print(f"Erro na view grafico_series_repeticoes: {e}")
         return JsonResponse({'erro': 'Erro ao gerar gráfico'}, status=500)
+
+@login_required
+def grafico_medicoes(request, parte_corpo):
+    try:
+        medicoes = Medicao.objects.filter(
+            usuario=request.user,
+            parte_corpo=parte_corpo
+        ).order_by('data_registro')
+
+        if not medicoes.exists():
+            return JsonResponse({
+                'labels': [],
+                'valores': []
+            })
+
+        labels = [m.data_registro.strftime("%d/%m/%Y %H:%M") for m in medicoes]
+        valores = [float(m.valor_cm) for m in medicoes]
+
+        return JsonResponse({
+            'labels': labels,
+            'valores': valores
+        })
+
+    except Exception as e:
+        print("Erro na view grafico_medicoes:", e)
+        return JsonResponse({'erro': 'Erro interno'}, status=500)

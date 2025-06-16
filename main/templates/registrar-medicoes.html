@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Registrar Cargas - GymTrack{% endblock %}
+{% block title %}Registrar Medições - GymTrack{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/registrar-medicoes.css' %}">
@@ -9,7 +9,6 @@
 
 {% block content %}
 <main class="main-content">
-
 
   <div class="tabs-filter-wrapper">
     <div class="tabs-container">
@@ -19,12 +18,12 @@
   </div>
 
   <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Pesquisar" onkeyup="filtrarExercicios()">
+    <input type="text" id="searchInput" placeholder="Pesquisar" onkeyup="filtrarPartes()">
   </div>
 
   <div class="cards-container" id="cardsContainer">
     {% for item in pch %}
-    <a href="#" class="card">
+    <a href="#" class="card" data-nome="{{ item.value }}" data-label="{{ item.nome }}" onclick="abrirModal(this)">
       <div class="card-info">
         <h3>{{ item.nome }}</h3>
       </div>
@@ -32,9 +31,100 @@
     {% endfor %}
   </div>
 
+  <div id="modalRegistro" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" onclick="fecharModal()">&times;</span>
+      <h2 id="tituloParte">Registrar Medição</h2>
+      <form method="POST" action="">
+        {% csrf_token %}
+        <input type="hidden" id="parteCorpo" name="parteCorpo">
+        <label for="medicaoInput">Medição (cm):</label>
+        <input type="number" id="medicaoInput" name="medicaoInput" required step="0.01">
+        <button type="submit">Registrar</button>
+      </form>
+    </div>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; margin-top: 30px">
+    <h2 style="margin: 0;">Registros</h2>
+    <input type="text" id="searchTabelaInput" placeholder="Buscar por parte do corpo..." onkeyup="filtrarTabela()" style="padding: 6px; width: 250px;">
+  </div>
+
+  <div class="tabela-medicoes" id="tabelaRegistros">
+    <table class="tabela-estilizada">
+    <thead>
+      <tr>
+        <th>Parte do Corpo</th>
+        <th>Medição</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+      <tbody id="tabelaBody">
+        {% for m in medicoes %}
+        <tr>
+          <td class="parte-nome">{{ m.parte_corpo }}</td>
+          <td>{{ m.valor_cm }} cm</td>
+          <td>{{ m.data_registro|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="3">Nenhum registro ainda.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
 </main>
 
 <script>
+function abrirModal(elemento) {
+  const parte = elemento.getAttribute("data-nome");
+  const label = elemento.getAttribute("data-label");
+  document.getElementById("tituloParte").innerText = `Registrar ${label}`;
+  document.getElementById("parteCorpo").value = parte;
+  document.getElementById("medicaoInput").value = '';
+  document.getElementById("modalRegistro").style.display = "flex";
+}
 
+function fecharModal() {
+  document.getElementById("modalRegistro").style.display = "none";
+}
+
+function filtrarPartes() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const cards = document.querySelectorAll(".card");
+
+  cards.forEach(card => {
+    const nome = card.getAttribute("data-nome").toLowerCase();
+    if (nome.includes(input)) {
+      card.style.display = "block";
+    } else {
+      card.style.display = "none";
+    }
+  });
+}
+
+function filtrarTabela() {
+  const input = document.getElementById("searchTabelaInput").value.toLowerCase();
+  const linhas = document.querySelectorAll("tbody tr");
+
+  linhas.forEach(linha => {
+    const parte = linha.cells[0]?.innerText.toLowerCase() || "";
+    linha.style.display = parte.includes(input) ? "" : "none";
+  });
+}
+</script>
+
+<script>
+  window.addEventListener('DOMContentLoaded', () => {
+    const url = new URL(window.location.href);
+    const scrollTarget = url.searchParams.get("scroll");
+
+    if (scrollTarget === "tabela") {
+      const tabela = document.getElementById("tabelaRegistros");
+      if (tabela) {
+        tabela.scrollIntoView({ behavior: "smooth" });
+      }
+    }
+  });
 </script>
 {% endblock %}

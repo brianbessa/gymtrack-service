@@ -79,3 +79,31 @@ h2 {
 .overview strong {
   color: #007bff;
 }
+
+.tabs-container {
+  display: inline-flex;
+  border-radius: 25px;
+  background-color: #f0f2f5;
+  padding: 3px;
+  margin-bottom: 20px;
+}
+
+.tab {
+  padding: 8px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: #3b3b3b;
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+  font-weight: 500;
+}
+
+.tab:hover {
+  background-color: #e1e3e6;
+}
+
+.tab.active {
+  background-color: white;
+  color: #000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}

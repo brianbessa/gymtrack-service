@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Acompanhar Progresso - GymTrack{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/acompanhar-processo-medicoes.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="main-content">
+    <section class="progresso-section">
+        <h1>Seu Progresso</h1>
+
+        <div class="tabs-filter-wrapper">
+        <div class="tabs-container">
+            <a href="{% url 'acompanhar-processo-cargas' %}" class="tab {% if active_tab == 'cargas' %}active{% endif %}">Cargas</a>
+            <a href="{% url 'acompanhar-processo-medicoes' %}" class="tab {% if active_tab == 'medicoes' %}active{% endif %}">Medições</a>
+        </div>
+        </div>
+
+        <div class="filtros-medicao">
+            <select id="selectParte">
+                {% for parte in partes_corpo %}
+                <option value="{{ parte.0 }}">{{ parte.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+    </section>
+
+    <canvas id="graficoMedicao" height="100"></canvas>
+
+    <h3 class="mt-4">Histórico de Peso</h3>
+
+    <table class="table">
+    <thead>
+        <tr>
+        <th>Peso</th>
+        <th>Data</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for med in peso_medicoes %}
+        <tr>
+        <td>{{ med.valor_cm }} kg</td>
+        <td>{{ med.data_registro|date:"d/m/Y H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+        <td colspan="2">Nenhuma medição de peso registrada.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  let chartInstance = null;
+
+  function renderMedicaoChart(labels, valores) {
+    const ctx = document.getElementById('graficoMedicao').getContext('2d');
+    if (chartInstance) {
+      chartInstance.destroy();
+    }
+
+    chartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Valor em cm',
+          data: valores,
+          borderColor: 'green',
+          backgroundColor: 'rgba(0, 200, 0, 0.2)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: false,
+            title: {
+              display: true,
+              text: 'Centímetros'
+            }
+          },
+          x: {
+            title: {
+              display: true,
+              text: 'Data'
+            }
+          }
+        }
+      }
+    });
+  }
+
+  function buscarMedicoes(parte) {
+    fetch(`/grafico/medicoes/${parte}/`)
+      .then(res => res.json())
+      .then(data => {
+        renderMedicaoChart(data.labels, data.valores);
+      });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("selectParte");
+    buscarMedicoes(select.value);
+    select.addEventListener("change", function () {
+      buscarMedicoes(this.value);
+    });
+  });
+</script>
+
+
+{% endblock %}
+
+

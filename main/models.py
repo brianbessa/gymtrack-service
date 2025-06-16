@@ -69,3 +69,22 @@ class RegistroCarga(models.Model):
     repeticoes = models.PositiveIntegerField()
     data = models.DateTimeField(auto_now_add=True)
     series = models.IntegerField(null=True, blank=True)
+
+class Medicao(models.Model):
+    PARTE_CORPO_CHOICES = [
+        ('braco_direito', 'Braço Direito'),
+        ('braco_esquerdo', 'Braço Esquerdo'),
+        ('peito', 'Peitoral'),
+        ('cintura', 'Cintura'),
+        ('quadril', 'Quadril'),
+        ('coxa_direita', 'Coxa Direita'),
+        ('coxa_esquerda', 'Coxa Esquerda'),
+        ('panturrilha_direita', 'Panturrilha Direita'),
+        ('panturrilha_esquerda', 'Panturrilha Esquerda'),
+        ('peso', 'Peso'),
+    ]
+
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    parte_corpo = models.CharField(max_length=30, choices=PARTE_CORPO_CHOICES)
+    valor_cm = models.DecimalField(max_digits=5, decimal_places=2)
+    data_registro = models.DateTimeField(auto_now_add=True)

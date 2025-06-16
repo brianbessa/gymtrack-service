@@ -12,10 +12,12 @@
   <section class="progresso-section">
     <h1>Seu Progresso</h1>
 
-    <div class="tabs-filter-wrapper">
-      <div class="tabs">
-        <button class="tab active">CARGAS</button>
-        <button class="tab">MEDIÇÕES</button>
+    <div class="filter-wrapper">
+      <div class="tabs-filter-wrapper">
+        <div class="tabs-container">
+          <a href="{% url 'acompanhar-processo-cargas' %}" class="tab {% if active_tab == 'cargas' %}active{% endif %}">Cargas</a>
+          <a href="{% url 'acompanhar-processo-medicoes' %}" class="tab {% if active_tab == 'medicoes' %}active{% endif %}">Medições</a>
+        </div>
       </div>
 
       <div class="filters">
