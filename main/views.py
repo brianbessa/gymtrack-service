@@ -20,6 +20,9 @@ from django.db.models import Sum
 from django.db.models.functions import TruncDate
 from django.urls import reverse
 from datetime import datetime, timedelta
+import requests
+from django.conf import settings
+from deep_translator import GoogleTranslator
 
 def home_view(request):
     return render(request, 'home.html')
@@ -451,3 +454,27 @@ def grafico_medicoes(request, parte_corpo):
     except Exception as e:
         print("Erro na view grafico_medicoes:", e)
         return JsonResponse({'erro': 'Erro interno'}, status=500)
+    
+@csrf_exempt
+def buscar_alimento_api(request):
+    nome = request.GET.get('nome')
+    quantidade = request.GET.get('quantidade', 1)
+
+    if not nome:
+        return JsonResponse({'error': 'Nome do alimento não fornecido'}, status=400)
+
+    try:
+        nome_em_ingles = GoogleTranslator(source='pt', target='en').translate(nome)
+    except Exception as e:
+        return JsonResponse({'error': f'Erro na tradução: {str(e)}'}, status=500)
+
+    headers = {
+        'X-Api-Key': settings.CALORIE_NINJAS_API_KEY
+    }
+    url = f'https://api.calorieninjas.com/v1/nutrition?query={quantidade} {nome_em_ingles}'
+
+    try:
+        response = requests.get(url, headers=headers)
+        return JsonResponse(response.json())
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

@@ -34,4 +34,5 @@ urlpatterns = [
     path("grafico/cargas/<int:exercicio_id>/", views.grafico_cargas, name="grafico_cargas"),
     path("grafico/series-repeticoes/<int:exercicio_id>/", views.grafico_series_repeticoes, name="grafico_series_repeticoes"),
     path("grafico/medicoes/<str:parte_corpo>/", views.grafico_medicoes, name="grafico_medicoes"),
+    path('api/buscar-alimento/', views.buscar_alimento_api, name='buscar_alimento_api'),
 ]

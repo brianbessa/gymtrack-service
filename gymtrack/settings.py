@@ -13,6 +13,10 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 import os
 from pathlib import Path
+from dotenv import load_dotenv
+from decouple import config
+
+load_dotenv() 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -130,3 +134,6 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/notificacao/'
+
+CALORIE_NINJAS_API_KEY = os.getenv('CALORIE_NINJAS_API_KEY')
+CALORIE_NINJAS_API_KEY = config('CALORIE_NINJAS_API_KEY')

@@ -42,7 +42,7 @@
         </div>
     </section>
 
-      <main class="container" id="calculadoras">
+    <main class="container" id="calculadoras">
     <section class="card" style="background-color: #f2f2f2;">
       <h2><img src="{% static 'img/medidor.png' %}" alt="Ícone" class="icon" style="width: 65px;"> Calcular IMC e TMB</h2>
       <div class="row">
@@ -64,7 +64,7 @@
         <label><input type="radio" name="atividade" value="1.725"> Muito ativo</label>
         <label><input type="radio" name="atividade" value="1.9"> Extremamente ativo</label>
       </div>
-      <button onclick="calcularIMCeTMB()">Calcular</button>
+      <button onclick="calcularIMCeTMB()" style="width: 100%">Calcular</button>
 
       <table>
         <thead>
@@ -81,20 +81,29 @@
     </section>
 
     <section class="card" style="background-color: #f2f2f2;">
-      <h2><img src="{% static 'img/alimento.png' %}" alt="Ícone" class="icon"> Calcular Ingestão de Alimentos</h2>
-      <input id="alimento" placeholder="Informe o alimento desejado" />
-      <input id="quantidade" type="number" placeholder="Quantidade" value="1" />
-      <button onclick="buscarAlimento()">Buscar</button>
+      <h2>
+        <img src="{% static 'img/alimento.png' %}" alt="Ícone" class="icon">
+        Calcular Ingestão de Alimentos
+      </h2>
+
+      <div class="alimento-wrapper">
+        <label for="alimento">Alimento</label>
+        <input id="alimento" placeholder="Informe o alimento desejado" />
+      </div>
+
+      <div class="quantidade-wrapper">
+        <label for="quantidade">Quantidade</label>
+        <input id="quantidade" type="number" placeholder="Quantidade" value="1" />
+        <button onclick="buscarAlimento()">Buscar</button>
+      </div>
 
       <table id="tabelaAlimento">
         <thead><tr><th colspan="2">Tabela nutricional</th></tr></thead>
         <tbody></tbody>
       </table>
     </section>
+
   </main>
-
-  <div class="resultado" id="resultado"></div>
-
 
     <section class="sobre" id="sobre">
         <img src="{% static 'img/sobre.png' %}" alt="Sobre a GymTrack">
@@ -183,13 +192,15 @@
         else if (imc < 40) classificacao = "Obesidade (Grau II)";
         else classificacao = "Obesidade Grave (Grau III)";
 
-        document.getElementById('resultado').style.display = 'block';
-        document.getElementById('resultado').innerHTML = `
-        <strong>Resultado:</strong><br>
-        ✅ <b>IMC:</b> ${imc.toFixed(2)} ${classificacao}<br>
-        🔥 <b>TMB:</b> ${tmb.toFixed(2)} kcal/dia<br>
-        🏃‍♂️ <b>Gasto Diário com Atividade:</b> ${tmbTotal.toFixed(2)} kcal/dia
+        const conteudo = `
+          <strong>Resultado:</strong><br>
+          ✅ <b>IMC:</b> ${imc.toFixed(2)} ${classificacao}<br>
+          🔥 <b>TMB:</b> ${tmb.toFixed(2)} kcal/dia<br>
+          🏃‍♂️ <b>Gasto Diário com Atividade:</b> ${tmbTotal.toFixed(2)} kcal/dia
         `;
+
+        document.getElementById('conteudoModal').innerHTML = conteudo;
+        document.getElementById('modalResultado').style.display = 'block';
     }
 
     async function buscarAlimento() {
@@ -202,11 +213,9 @@
       tabela.innerHTML = "<tr><td colspan='2'>Buscando...</td></tr>";
 
       try {
-        const res = await fetch(`https://api.calorieninjas.com/v1/nutrition?query=${quantidade} ${nome}`, {
-          headers: { 'X-Api-Key': '' } //implementar api no futuro
-        });
+        const res = await fetch(`/api/buscar-alimento/?nome=${nome}&quantidade=${quantidade}`);
         const data = await res.json();
-        const alimento = data.items[0];
+        const alimento = data.items?.[0];
 
         if (!alimento) {
           tabela.innerHTML = "<tr><td colspan='2'>Alimento não encontrado</td></tr>";
@@ -225,7 +234,19 @@
         console.error(err);
       }
     }
+
+    function fecharModal() {
+      document.getElementById('modalResultado').style.display = 'none';
+    }
+
     </script>
+
+    <div id="modalResultado" class="modal">
+      <div class="modal-conteudo">
+        <span class="fechar" onclick="fecharModal()">&times;</span>
+        <div id="conteudoModal"></div>
+      </div>
+    </div>
 </body>
 
 </html>

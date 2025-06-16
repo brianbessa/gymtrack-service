@@ -238,6 +238,10 @@ nav a:hover {
     cursor: pointer;
 }
 
+.destaque a:hover {
+    background-color: #0064c9;
+}
+
 .seta-baixo {
     font-size: 30px;
     color: white;
@@ -318,6 +322,10 @@ nav a:hover {
     cursor: pointer;
 }
 
+.rodape-cta a:hover {
+    background-color: #0064c9;
+}
+
 .texto-banner {
     max-width: 50%;
     flex: 1;
@@ -351,7 +359,7 @@ nav a:hover {
 
 .imagem-banner img {
     width: 100%;
-    max-width: 550px;
+    max-width: 650px;
     height: auto;
     object-fit: contain;
 }
@@ -410,7 +418,7 @@ html {
   content: '';
   display: block;
   height: 6px;
-  background-color: #377dff;
+  background-color: #a3cf74;
   border-radius: 4px;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
@@ -438,23 +446,6 @@ input, select {
   font-size: 0.85rem;
 }
 
-button {
-  background-color: #377dff;
-  color: white;
-  border: none;
-  padding: 0.8rem 1.4rem;
-  border-radius: 999px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  margin-top: 15px;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background-color: #1f5fd2;
-}
-
 table {
   width: 100%;
   border-collapse: collapse;
@@ -463,8 +454,8 @@ table {
 }
 
 th {
-  background-color: #377dff;
-  color: white;
+  background-color: #a3cf74;
+  color: black;
   text-align: center;
   padding: 0.6rem;
 }
@@ -494,4 +485,107 @@ td {
   font-size: 1.8rem;
   color: green;
   margin-right: 0.5rem;
+}
+
+.alimento-section {
+  max-width: 600px; 
+  margin: auto;
+  padding: 20px;
+}
+
+#alimento {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+
+.quantidade-e-botao {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+#quantidade {
+  width: 94%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+button {
+  background-color: transparent;
+  color: black;
+  border: 2px solid black;
+  border-radius: 30px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+    background-color: #d4d4d4;
+}
+ 
+.quantidade-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.quantidade-wrapper label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.alimento-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0;
+}
+
+.alimento-wrapper label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 999; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  overflow: auto;
+  background-color: rgba(0,0,0,0.5); 
+}
+
+.modal-conteudo {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  font-size: 16px;
+}
+
+.fechar {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.fechar:hover {
+  color: black;
 }
