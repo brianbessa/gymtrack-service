@@ -35,4 +35,6 @@ urlpatterns = [
     path("grafico/series-repeticoes/<int:exercicio_id>/", views.grafico_series_repeticoes, name="grafico_series_repeticoes"),
     path("grafico/medicoes/<str:parte_corpo>/", views.grafico_medicoes, name="grafico_medicoes"),
     path('api/buscar-alimento/', views.buscar_alimento_api, name='buscar_alimento_api'),
+    path('trocar-exercicio/', views.trocar_exercicio_view, name='trocar_exercicio'),
+    path('avaliar/', views.avaliar, name='avaliar'),
 ]

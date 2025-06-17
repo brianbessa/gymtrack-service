@@ -88,3 +88,24 @@ class Medicao(models.Model):
     parte_corpo = models.CharField(max_length=30, choices=PARTE_CORPO_CHOICES)
     valor_cm = models.DecimalField(max_digits=5, decimal_places=2)
     data_registro = models.DateTimeField(auto_now_add=True)
+
+class TreinoPersonalizado(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    tipo = models.CharField(max_length=1, choices=[('A', 'A'), ('B', 'B'), ('C', 'C')])
+    exercicio = models.ForeignKey(Exercicio, on_delete=models.CASCADE)
+    series = models.IntegerField()
+    repeticoes = models.IntegerField()
+
+    class Meta:
+        unique_together = ('user', 'tipo', 'exercicio')
+
+    def __str__(self):
+        return f"{self.user.username} - Treino {self.tipo} - {self.exercicio.nome}"
+
+class Avaliacao(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    nota = models.PositiveSmallIntegerField() 
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Avaliação {self.nota} por {self.usuario}'

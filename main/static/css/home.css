@@ -17,7 +17,7 @@ a {
 .banner {
     position: relative;
     height: 100vh;
-    background: url('../img/banner_fundo.png') no-repeat center center/cover;
+    background: url('../img/banner_fundo.jpg') no-repeat center center/cover;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -107,7 +107,7 @@ nav a:hover {
     border-radius: 30px;
     color: white;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 28px;
     display: inline-block;
     transition: background 0.3s;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
@@ -192,7 +192,7 @@ nav a:hover {
     position: relative;
     color: white;
     background: url('../img/plano_fundo.png') no-repeat center center/cover;
-    padding: 60px 20px 0;
+    padding: 60px 0 0;
     text-align: center;
     overflow: hidden;
 }
@@ -245,7 +245,7 @@ nav a:hover {
 .seta-baixo {
     font-size: 30px;
     color: white;
-    margin: 40px auto 20px;
+    margin: 60px auto 20px;
     display: block;
 }
 
@@ -336,7 +336,7 @@ nav a:hover {
 }
 
 .texto-banner h1 {
-    font-size: 1.8em;
+    font-size: 2.5em;
     font-weight: 600;
     margin-bottom: 20px;
     white-space: nowrap;

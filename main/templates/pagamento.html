@@ -1,63 +1,54 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-{% load static %}  
+<html lang="pt-BR">
+{% load static %}
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GymTrack - Checkout</title>
+    <title>Checkout - GymTrack</title>
     <link rel="stylesheet" href="{% static 'css/pagamento.css' %}">
+    <style>
+        .left, .right { padding: 30px; }
+        .left { flex: 1; }
+        .right { flex: 1; background-color: #f9f9f9; border-radius: 10px; }
+        .plan-box { background: linear-gradient(135deg, #3b82f6, #1e40af); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .title { font-size: 24px; font-weight: bold; }
+        .total { font-size: 20px; font-weight: bold; }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <div class="alert" id="pix-alert">
+        <i class="fas fa-exclamation-triangle"></i>
+        O QR Code gerado expirará em 15 minutos. Conclua o pagamento o quanto antes para garantir sua assinatura do plano Plus
+    </div>
+    <div class="left">
+        <img src="{% static 'img/logo.png' %}" alt="Logo" width="100"><br><br>
+        <h2>Checkout</h2>
+        <p><strong>Nome:</strong> {{ nome }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Valor:</strong> R$ {{ valor }}</p>
 
-    <div class="warning">
-        ⚠️ O QR Code gerado expirará em 15 minutos. Conclua o pagamento o quanto antes para garantir sua assinatura do plano Plus
+        <h3>Escaneie com seu app de banco</h3>
+        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code Pix" style="max-width: 300px; margin-top: 10px;">
     </div>
 
-    <div class="container">
-
-        <div class="left">
-            <div class="logo">
-                <img src="logo.png" alt="Logo">
-            </div>
-
-            <h1>Checkout</h1>
-
-            <h3>DETALHES DA COMPRA</h3>
-            <hr class="line">
-
-            <div class="info">
-                <p>Vinicius Marques</p>
-                <p>vinicius@gmail.com</p>
-                <p>R. Ibituruna, 108</p>
-                <p>Maracanã</p>
-                <p>Rio de Janeiro</p>
-            </div>
-
-            <div class="pix">
-                <img src="pix.png" alt="Pix">
-            </div>
-
-            <div class="qrcode">
-                <img src="qrcode.png" alt="QR Code">
-            </div>
+    <div class="right">
+        <div class="plan-box">
+            <div class="title">📄 Plano Plus</div>
+            <p>Tenha acesso a recursos avançados como visualização do progresso com gráficos personalizados, registro detalhado de medidas e cargas, planos de treino elaborados exclusivamente para você e diversas outras funcionalidades!</p>
+            <p style="font-size: 24px; font-weight: bold;">R$ 49,90*</p>
         </div>
-
-        <div class="right">
-            <div class="card">
-                <h2>📄 Plano Plus</h2>
-                <p>Tenha acesso a recursos avançados como visualização do progresso com gráficos personalizados, registro detalhado de medidas e cargas, planos de treino elaborados exclusivamente para você e diversas outras funcionalidades!</p>
-                <h3>R$ 49,90*</h3>
-            </div>
-
-            <div class="summary">
-                <p>Subtotal <span>49,90</span></p>
-                <p>Frete <span>00,00</span></p>
-                <hr>
-                <p class="total">Total <span>49,90</span></p>
-            </div>
-        </div>
-
+        <p>Subtotal: R$ 49,90</p>
+        <p>Frete: R$ 00,00</p>
+        <hr>
+        <p class="total">Total: R$ 49,90</p>
     </div>
+    
+<script>
+  setTimeout(() => {
+    const alert = document.getElementById('pix-alert');
+    if (alert) alert.style.display = 'none';
+  }, 10000); // 10 segundos
+</script>
 
 </body>
 </html>

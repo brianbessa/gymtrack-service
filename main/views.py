@@ -4,14 +4,16 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CadastroForm
-from .models import Profile, Cliente, Nutricionista, Notificacao, Mensagem, Exercicio, RegistroCarga, Medicao
+from .models import Profile, Cliente, Nutricionista, Notificacao, Mensagem, Exercicio, RegistroCarga, Medicao, TreinoPersonalizado, Avaliacao
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm
 from django.contrib.auth.models import User
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.db import transaction
 from django.http import HttpResponse
 import json
+import random
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from decimal import Decimal, InvalidOperation
@@ -23,13 +25,29 @@ from datetime import datetime, timedelta
 import requests
 from django.conf import settings
 from deep_translator import GoogleTranslator
+from utils import gerar_qr_pix
 
 def home_view(request):
     return render(request, 'home.html')
 
 def pagamento_view(request):
-    return render(request, 'pagamento.html')
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('login')
 
+    chave_pix = "exemplo@pix.com"  # Altere para sua chave
+    nome = user.first_name or user.username
+    cidade = "Rio de Janeiro"
+    valor = 49.90
+
+    qr_code_base64 = gerar_qr_pix(chave_pix, nome, cidade, valor)
+
+    return render(request, 'pagamento.html', {
+        'qr_code': qr_code_base64,
+        'nome': nome,
+        'email': user.email,
+        'valor': valor,
+    })
 from .models import Nutricionista
 
 def cadastro_nutricionista_view(request):
@@ -125,7 +143,7 @@ def cadastro_view(request):
             )
 
             Cliente.objects.create(user=user)
-            messages.success(request, 'Conta criada com sucesso! Faça login para continuar.')
+            login(request, user)
             return redirect('pagamento')
     else:
         form = CadastroForm()
@@ -173,8 +191,102 @@ def acompanhar_processo_medicoes_view(request):
         'active_tab': 'medicoes',
     })
 
+def selecionar_exercicios(grupo, quantidade):
+    exercicios = list(Exercicio.objects.filter(grupo__iexact=grupo))
+    random.shuffle(exercicios)
+    return exercicios[:quantidade]
+
+@transaction.atomic
+def gerar_ou_obter_treino(user, tipo, configuracao):
+    treino = TreinoPersonalizado.objects.filter(user=user, tipo=tipo)
+    if treino.exists():
+        return treino
+
+    exercicios_selecionados = []
+    for grupo, qtd in configuracao:
+        exercicios_selecionados += selecionar_exercicios(grupo, qtd)
+
+    treino_criado = []
+    for ex in exercicios_selecionados:
+        series = random.randint(2, 4)
+        repeticoes = random.randint(6, 12)
+        treino = TreinoPersonalizado.objects.create(
+            user=user,
+            tipo=tipo,
+            exercicio=ex,
+            series=series,
+            repeticoes=repeticoes
+        )
+        treino_criado.append(treino)
+
+    return treino_criado
+
 def treinos_personalizados_view(request):
-    return render(request, 'treinos-personalizados.html')
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    profile = request.user.profile
+    objetivo = profile.objetivo
+
+    treino_a = gerar_ou_obter_treino(request.user, 'A', [
+        ('peitoral', 3), ('tríceps', 2), ('ombros', 2)
+    ])
+
+    treino_b = gerar_ou_obter_treino(request.user, 'B', [
+        ('costas', 3), ('bíceps', 2), ('trapézio', 1), ('antebraço', 1)
+    ])
+
+    treino_c = gerar_ou_obter_treino(request.user, 'C', [
+        ('quadríceps', 3), ('posterior de coxa', 2), ('panturrilhas', 2)
+    ])
+
+    context = {
+        'objetivo': objetivo,
+        'treino_a': treino_a,
+        'treino_b': treino_b,
+        'treino_c': treino_c,
+    }
+
+    return render(request, 'treinos-personalizados.html', context)
+
+def trocar_exercicio_view(request):
+    try:
+        grupo = request.GET.get('grupo')
+        tipo = request.GET.get('tipo')
+        index = request.GET.get('index')
+        exercicio_id = request.GET.get('exercicio_id')
+
+        if not grupo or not tipo or not index or not exercicio_id:
+            return JsonResponse({'success': False, 'error': 'Parâmetros faltando'})
+
+        index = int(index)
+        exercicio_id = int(exercicio_id)
+
+        user = request.user
+
+        exercicios_possiveis = list(
+            Exercicio.objects.filter(grupo=grupo).exclude(id=exercicio_id)
+        )
+
+        if not exercicios_possiveis:
+            return JsonResponse({'success': False, 'error': 'Nenhum exercício disponível para troca'})
+
+        novo_exercicio = random.choice(exercicios_possiveis)
+
+        treino = TreinoPersonalizado.objects.filter(user=user, tipo=tipo)
+        treino_list = list(treino)
+
+        if index >= len(treino_list):
+            return JsonResponse({'success': False, 'error': 'Índice fora do alcance'})
+
+        treino_list[index].exercicio = novo_exercicio
+        treino_list[index].save()
+
+        return JsonResponse({'success': True})
+
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)})
+
 
 def nutricionista_view(request):
     try:
@@ -389,7 +501,6 @@ def grafico_cargas(request, exercicio_id):
         min_carga = min(r.carga for r in registros)
         media_reps_por_serie = total_reps / total_series if total_series else 0
 
-        # Pega a primeira ocorrência da maior carga
         data_max_carga = registros.filter(carga=max_carga).first()
         data_max_carga = data_max_carga.data.strftime("%d/%m") if data_max_carga else None
 
@@ -478,3 +589,14 @@ def buscar_alimento_api(request):
         return JsonResponse(response.json())
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+    
+def avaliar(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        nota = data.get('nota')
+        usuario = request.user if request.user.is_authenticated else None
+
+        Avaliacao.objects.create(usuario=usuario, nota=nota)
+
+        return JsonResponse({'success': True})
+    return JsonResponse({'error': 'Método inválido'}, status=400)
