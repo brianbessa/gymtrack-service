@@ -18,7 +18,11 @@
       {% for nutricionista in nutricionistas %}
         <div class="card" onclick="openModal('{{ nutricionista.id }}')">
           <h3 class="nutricionista-nome">{{ nutricionista.user.username }}</h3>
-          <p>Online recentemente</p>
+          {% if nutricionista.is_online %}
+            <p class="online">🟢 Online agora</p>
+          {% else %}
+            <p class="offline">Online há {{ nutricionista.last_seen|timesince }}</p>
+          {% endif %}
           <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐ <span>(0)</span></div>
           {% if not cliente.nutricionista %}
             <button class="btn">AGENDAR NUTRICIONISTA</button>

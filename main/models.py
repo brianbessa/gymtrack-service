@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
@@ -26,9 +27,15 @@ class Nutricionista(models.Model):
     data_nascimento = models.DateField(null=True, blank=True)
     valor_consulta = models.DecimalField(max_digits=6, decimal_places=2)
     chave_pix = models.CharField(max_length=100)
+    last_seen = models.DateTimeField(null=True, blank=True)  
 
     def __str__(self):
         return f'Nutricionista: {self.user.username}'
+
+    def is_online(self):
+        if self.last_seen:
+            return (timezone.now() - self.last_seen).total_seconds() < 60
+        return False
 
 class Cliente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)

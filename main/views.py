@@ -564,7 +564,7 @@ def grafico_series_repeticoes(request, exercicio_id):
             .order_by('data_formatada')
         )
 
-        labels = [r['data_formatada'].strftime('%d/%m') for r in registros]
+        labels = [r['data_formatada'].strftime('%d/%m') for r in registros if r['data_formatada']]
         data = [r['total_reps'] for r in registros]
 
         return JsonResponse({'labels': labels, 'data': data})
