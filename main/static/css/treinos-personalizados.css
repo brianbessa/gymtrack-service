@@ -4,21 +4,20 @@ body {
   background-color: #f8f8f8;
 }
 
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
 .container {
   display: flex;
   height: 100vh;
 }
 
-.main-content {
-  flex: 1;
-  padding: 30px 40px;
-  background-color: white;
-  overflow-y: auto;
-}
-
 .treino-container {
-  max-width: 800px;
-  padding: 20px;
+  width: 70%;
+  margin: 30px;
 }
 
 .treino-section {
@@ -181,3 +180,40 @@ body {
 .nota-3 { background-color: #fff176; }
 .nota-4 { background-color: #c5e1a5; }
 .nota-5 { background-color: #81f781; }
+
+.calendario-semanal {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.calendario-semanal h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.tabela-calendario {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.tabela-calendario th {
+  padding: 10px;
+  background-color: #242424;
+  color: #ffffff;
+  border: 1px solid #242424;
+  font-weight: bold;
+}
+
+.tabela-calendario td {
+  height: 80px;
+  background-color: #ff8b8b;
+  border: 1px solid #ddd;
+}
+
+.dia-ativo {
+  border: 2px solid #00a97f !important;
+  background-color: #e6fff5 !important;
+}
+

@@ -4,7 +4,7 @@ from django.contrib.auth import login
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import CadastroForm
-from .models import Profile, Cliente, Nutricionista, Notificacao, Mensagem, Exercicio, RegistroCarga, Medicao, TreinoPersonalizado, Avaliacao
+from .models import Profile, Cliente, Nutricionista, Notificacao, Mensagem, Exercicio, RegistroCarga, Medicao, TreinoPersonalizado, Avaliacao, PlanoNutricional
 from django.contrib.auth import authenticate, login
 from .forms import LoginForm
 from django.contrib.auth.models import User
@@ -25,7 +25,7 @@ from datetime import datetime, timedelta
 import requests
 from django.conf import settings
 from deep_translator import GoogleTranslator
-from utils import gerar_qr_pix
+from utils import gerar_qr_pix, processar_txt_inteligente
 
 def home_view(request):
     return render(request, 'home.html')
@@ -35,7 +35,7 @@ def pagamento_view(request):
     if not user.is_authenticated:
         return redirect('login')
 
-    chave_pix = "exemplo@pix.com"  # Altere para sua chave
+    chave_pix = "exemplo@pix.com" 
     nome = user.first_name or user.username
     cidade = "Rio de Janeiro"
     valor = 49.90
@@ -48,7 +48,6 @@ def pagamento_view(request):
         'email': user.email,
         'valor': valor,
     })
-from .models import Nutricionista
 
 def cadastro_nutricionista_view(request):
     if request.method == 'POST':
@@ -172,7 +171,27 @@ def perfil_view(request):
     return render(request, 'perfil.html')
 
 def plano_nutricional_view(request):
-    return render(request, 'plano-nutricional.html')
+    cliente = get_object_or_404(Cliente, user=request.user)
+    planos = PlanoNutricional.objects.filter(cliente=cliente)
+
+    ordem_refeicoes = [
+        'café da manhã',
+        'lanche da manhã',
+        'almoço',
+        'lanche da tarde',
+        'jantar',
+        'ceia'
+    ]
+
+    planos_ordenados = sorted(
+        planos,
+        key=lambda plano: ordem_refeicoes.index(plano.refeicao.lower())
+        if plano.refeicao.lower() in ordem_refeicoes else len(ordem_refeicoes)
+    )
+
+    return render(request, 'plano-nutricional.html', {
+        'planos': planos_ordenados,
+    })
 
 def acompanhar_processo_cargas_view(request):
     exercicios = Exercicio.objects.all()
@@ -226,7 +245,7 @@ def treinos_personalizados_view(request):
         return redirect('login')
 
     profile = request.user.profile
-    objetivo = profile.objetivo
+    objetivo = profile.objetivo.lower() 
 
     treino_a = gerar_ou_obter_treino(request.user, 'A', [
         ('peitoral', 3), ('tríceps', 2), ('ombros', 2)
@@ -240,11 +259,17 @@ def treinos_personalizados_view(request):
         ('quadríceps', 3), ('posterior de coxa', 2), ('panturrilhas', 2)
     ])
 
+    ja_avaliou = Avaliacao.objects.filter(usuario=request.user).exists()
+
+    dias_semana = ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom']
+
     context = {
         'objetivo': objetivo,
         'treino_a': treino_a,
         'treino_b': treino_b,
         'treino_c': treino_c,
+        'ja_avaliou': ja_avaliou,
+        'dias_semana': dias_semana
     }
 
     return render(request, 'treinos-personalizados.html', context)
@@ -261,24 +286,30 @@ def trocar_exercicio_view(request):
 
         index = int(index)
         exercicio_id = int(exercicio_id)
-
         user = request.user
 
-        exercicios_possiveis = list(
-            Exercicio.objects.filter(grupo=grupo).exclude(id=exercicio_id)
-        )
-
-        if not exercicios_possiveis:
-            return JsonResponse({'success': False, 'error': 'Nenhum exercício disponível para troca'})
-
-        novo_exercicio = random.choice(exercicios_possiveis)
-
-        treino = TreinoPersonalizado.objects.filter(user=user, tipo=tipo)
-        treino_list = list(treino)
+        # Busca todos os treinos do usuário e tipo atual
+        treino_queryset = TreinoPersonalizado.objects.filter(user=user, tipo=tipo)
+        treino_list = list(treino_queryset)
 
         if index >= len(treino_list):
             return JsonResponse({'success': False, 'error': 'Índice fora do alcance'})
 
+        # Coleta todos os IDs de exercícios já usados nesse treino
+        ids_ja_usados = [t.exercicio.id for t in treino_list]
+
+        # Filtra os possíveis novos exercícios: mesmo grupo, não sendo o atual nem já usados
+        exercicios_possiveis = list(
+            Exercicio.objects.filter(grupo=grupo).exclude(id__in=ids_ja_usados)
+        )
+
+        if not exercicios_possiveis:
+            return JsonResponse({'success': False, 'error': 'Nenhum exercício alternativo disponível'})
+
+        # Escolhe aleatoriamente um exercício válido
+        novo_exercicio = random.choice(exercicios_possiveis)
+
+        # Substitui o exercício no índice correspondente
         treino_list[index].exercicio = novo_exercicio
         treino_list[index].save()
 
@@ -320,12 +351,14 @@ def confirmar_consulta(request, nutricionista_id):
 
         Notificacao.objects.create(
             usuario=cliente.user,
+            cliente=cliente,
             titulo='Contrato confirmado!',
             mensagem=f'Você agora está vinculado ao nutricionista {nutricionista.user.get_full_name() or nutricionista.user.username}. Em breve você receberá seu plano alimentar direto em Plano nutricional.'
         )
 
         Notificacao.objects.create(
             usuario=nutricionista.user,
+            cliente=cliente,
             titulo=f'{nome_cliente} acabou de te contratar!',
             mensagem=f'''
                 Agora é com você: analise o objetivo dele e monte uma dieta personalizada.<br><br>
@@ -596,7 +629,36 @@ def avaliar(request):
         nota = data.get('nota')
         usuario = request.user if request.user.is_authenticated else None
 
-        Avaliacao.objects.create(usuario=usuario, nota=nota)
+        if usuario and Avaliacao.objects.filter(usuario=usuario).exists():
+            return JsonResponse({'success': False, 'message': 'Usuário já avaliou.'})
 
+        Avaliacao.objects.create(usuario=usuario, nota=nota)
         return JsonResponse({'success': True})
+    
     return JsonResponse({'error': 'Método inválido'}, status=400)
+
+def upload_plano_txt(request, cliente_id):
+    if request.method == 'POST':
+        cliente = get_object_or_404(Cliente, id=cliente_id)
+        arquivo = request.FILES.get('arquivo_txt')
+
+        if arquivo and arquivo.name.endswith('.txt'):
+            conteudo = arquivo.read().decode('utf-8')
+            plano_dict = processar_txt_inteligente(conteudo)
+
+            PlanoNutricional.objects.filter(cliente=cliente).delete()
+
+            for refeicao, dados in plano_dict.items():
+                descricao = '\n'.join(dados["alimentos"])
+                PlanoNutricional.objects.create(
+                    cliente=cliente,
+                    refeicao=refeicao.title(),
+                    descricao=descricao,
+                    horario=dados["horario"]
+                )
+
+            messages.success(request, 'Plano nutricional importado com sucesso!')
+        else:
+            messages.error(request, 'Erro: envie um arquivo .txt válido.')
+
+    return redirect('notificacao-nutricionista')

@@ -28,14 +28,18 @@
             <p><strong>{{ notificacao.titulo }}</strong></p>
             <p>{{ notificacao.mensagem|safe }}</p>
 
-            {% if "monte uma dieta personalizada" in notificacao.mensagem %}
-            <div class="upload-box">
-              <p>Envie a dieta aqui e siga as instruções conforme indicado:</p>
-              <div class="upload-area">
-                <i class="fas fa-file-alt"></i>
-                <span>TXT</span>
+            {% if "monte uma dieta personalizada" in notificacao.mensagem and notificacao.cliente %}
+              <div class="upload-box">
+                <p>Envie a dieta aqui e siga as instruções conforme indicado:</p>
+
+                <form method="post" action="{% url 'upload_plano_txt' notificacao.cliente.id %}" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <input type="file" name="arquivo_txt" accept=".txt" required>
+                  <button type="submit">Enviar Plano</button>
+                </form>
               </div>
-            </div>
+            {% elif "monte uma dieta personalizada" in notificacao.mensagem %}
+              <p style="color: red; font-size: 0.9rem;">⚠️ Notificação sem cliente vinculado. Plano não pode ser enviado.</p>
             {% endif %}
           </div>
           <input type="checkbox" />

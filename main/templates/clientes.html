@@ -8,54 +8,55 @@
 {% endblock %}
 
 {% block content %}
+<div class="main-content">
+  <div class="tabela-clientes-container">
 
-<div class="tabela-clientes-container">
+    <div class="barra-pesquisa">
+      <input type="text" id="filtroClientes" placeholder="Pesquisar cliente" onkeyup="filtrarClientes()">
+    </div>
 
-  <div class="barra-pesquisa">
-    <input type="text" id="filtroClientes" placeholder="Pesquisar cliente" onkeyup="filtrarClientes()">
-  </div>
-
-  {% if clientes %}
-    <table class="tabela-clientes-estilo-db" id="tabelaClientes">
-      <thead>
-        <tr>
-          <th>Nome</th>
-          <th>Email</th>
-          <th>Objetivo Principal</th>
-          <th>Experiência</th>
-          <th>Enviar mensagem</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for cliente in clientes %}
+    {% if clientes %}
+      <table class="tabela-clientes-estilo-db" id="tabelaClientes">
+        <thead>
           <tr>
-            <td>{{ cliente.user.get_full_name|default:cliente.user.username }}</td>
-            <td>{{ cliente.user.email }}</td>
-            <td>{{ cliente.user.profile.objetivo }}</td>
-            <td>{{ cliente.user.profile.experiencia }}</td>
-            <td>
-            <img src="{% static 'img/sendmsg.png' %}" alt="Enviar mensagem" class="icon-acao" style="cursor:pointer;" onclick="mostrarFormulario({{ cliente.user.id }})">
-
-            <!-- Formulário oculto -->
-            <div id="formulario-msg-{{ cliente.user.id }}" class="formulario-msg" style="display: none; margin-top: 10px;">
-                <form method="POST" action="{% url 'enviar_mensagem' cliente.user.id %}">
-                {% csrf_token %}
-                <input type="text" name="titulo" placeholder="Título" required style="width: 100%; margin-bottom: 5px;">
-                <textarea name="descricao" placeholder="Mensagem..." rows="3" required style="width: 100%;"></textarea>
-                <div style="margin-top: 5px;">
-                    <button type="submit" style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; border-radius: 4px;">Enviar</button>
-                    <button type="button" onclick="esconderFormulario({{ cliente.user.id }})" style="background-color: #ccc; padding: 5px 10px; border: none; border-radius: 4px; margin-left: 5px;">Cancelar</button>
-                </div>
-                </form>
-            </div>
-            </td>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Objetivo Principal</th>
+            <th>Experiência</th>
+            <th>Enviar mensagem</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-    <p>Nenhum cliente cadastrado.</p>
-  {% endif %}
+        </thead>
+        <tbody>
+          {% for cliente in clientes %}
+            <tr>
+              <td>{{ cliente.user.get_full_name|default:cliente.user.username }}</td>
+              <td>{{ cliente.user.email }}</td>
+              <td>{{ cliente.user.profile.objetivo }}</td>
+              <td>{{ cliente.user.profile.experiencia }}</td>
+              <td>
+              <img src="{% static 'img/sendmsg.png' %}" alt="Enviar mensagem" class="icon-acao" style="cursor:pointer;" onclick="mostrarFormulario({{ cliente.user.id }})">
+
+              <!-- Formulário oculto -->
+              <div id="formulario-msg-{{ cliente.user.id }}" class="formulario-msg" style="display: none; margin-top: 10px;">
+                  <form method="POST" action="{% url 'enviar_mensagem' cliente.user.id %}">
+                  {% csrf_token %}
+                  <input type="text" name="titulo" placeholder="Título" required style="width: 100%; margin-bottom: 5px;">
+                  <textarea name="descricao" placeholder="Mensagem..." rows="3" required style="width: 100%;"></textarea>
+                  <div style="margin-top: 5px;">
+                      <button type="submit" style="background-color: #4CAF50; color: white; padding: 5px 10px; border: none; border-radius: 4px;">Enviar</button>
+                      <button type="button" onclick="esconderFormulario({{ cliente.user.id }})" style="background-color: #ccc; padding: 5px 10px; border: none; border-radius: 4px; margin-left: 5px;">Cancelar</button>
+                  </div>
+                  </form>
+              </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Nenhum cliente cadastrado.</p>
+    {% endif %}
+  </div>
 </div>
 
 <script>

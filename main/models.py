@@ -37,6 +37,7 @@ class Cliente(models.Model):
 class Notificacao(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notificacao')
     titulo = models.CharField(max_length=100)
+    cliente = models.ForeignKey(Cliente, on_delete=models.SET_NULL, null=True, blank=True)
     mensagem = models.TextField()
     icone = models.CharField(max_length=10, default="🔔")
     data_envio = models.DateTimeField(auto_now_add=True)
@@ -109,3 +110,13 @@ class Avaliacao(models.Model):
 
     def __str__(self):
         return f'Avaliação {self.nota} por {self.usuario}'
+    
+class PlanoNutricional(models.Model):
+    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    refeicao = models.CharField(max_length=100)  
+    descricao = models.TextField()               
+    criado_em = models.DateTimeField(auto_now_add=True)
+    horario = models.TimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.refeicao} - {self.cliente}"

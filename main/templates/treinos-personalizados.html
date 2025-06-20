@@ -35,7 +35,7 @@
           <span>Repetições</span>
         </div>
       </div>
-      <button class="btn-trocar" onclick="trocarExercicio('{{ exercicio.id }}', '{{ exercicio.grupo }}', '{{ forloop.counter0 }}', 'A')">
+      <button class="btn-trocar" onclick="trocarExercicio('{{ treino.exercicio.id }}', '{{ treino.exercicio.grupo }}', '{{ forloop.counter0 }}', 'B')">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M4 7h16M4 7l4 4M4 7l4-4M20 17H4m16 0l-4-4m4 4l-4 4" />
         </svg>
@@ -62,7 +62,7 @@
           <span>Repetições</span>
         </div>
       </div>
-      <button class="btn-trocar" onclick="trocarExercicio('{{ exercicio.id }}', '{{ exercicio.grupo }}', '{{ forloop.counter0 }}', 'A')">
+      <button class="btn-trocar" onclick="trocarExercicio('{{ treino.exercicio.id }}', '{{ treino.exercicio.grupo }}', '{{ forloop.counter0 }}', 'B')">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M4 7h16M4 7l4 4M4 7l4-4M20 17H4m16 0l-4-4m4 4l-4 4" />
         </svg>
@@ -89,7 +89,7 @@
           <span>Repetições</span>
         </div>
       </div>
-      <button class="btn-trocar" onclick="trocarExercicio('{{ exercicio.id }}', '{{ exercicio.grupo }}', '{{ forloop.counter0 }}', 'A')">
+      <button class="btn-trocar" onclick="trocarExercicio('{{ treino.exercicio.id }}', '{{ treino.exercicio.grupo }}', '{{ forloop.counter0 }}', 'C')">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M4 7h16M4 7l4 4M4 7l4-4M20 17H4m16 0l-4-4m4 4l-4 4" />
         </svg>
@@ -99,17 +99,41 @@
   </div>
 </div>
 
-<div id="avaliacao" class="avaliacao-container">
-  <h3>Nos avalie:</h3>
-  <div class="botoes-avaliacao">
-    <button onclick="enviarAvaliacao(1)" class="nota nota-1">1</button>
-    <button onclick="enviarAvaliacao(2)" class="nota nota-2">2</button>
-    <button onclick="enviarAvaliacao(3)" class="nota nota-3">3</button>
-    <button onclick="enviarAvaliacao(4)" class="nota nota-4">4</button>
-    <button onclick="enviarAvaliacao(5)" class="nota nota-5">5</button>
-  </div>
-  <p>Sua opinião nos ajuda a melhorar!</p>
+<div class="calendario-semanal">
+  <h3>Dias de Treino</h3>
+  <table class="tabela-calendario">
+    <thead>
+      <tr>
+        {% for dia in dias_semana %}
+        <th>{{ dia }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for i in "1" %}
+      <tr>
+        {% for dia in dias_semana %}
+        <td class="dia-{{ dia|lower }}"></td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+
+{% if not ja_avaliou %}
+  <div id="avaliacao" class="avaliacao-container">
+    <h3>Nos avalie:</h3>
+    <div class="botoes-avaliacao">
+      <button onclick="enviarAvaliacao(1)" class="nota nota-1">1</button>
+      <button onclick="enviarAvaliacao(2)" class="nota nota-2">2</button>
+      <button onclick="enviarAvaliacao(3)" class="nota nota-3">3</button>
+      <button onclick="enviarAvaliacao(4)" class="nota nota-4">4</button>
+      <button onclick="enviarAvaliacao(5)" class="nota nota-5">5</button>
+    </div>
+    <p>Sua opinião nos ajuda a melhorar!</p>
+  </div>
+{% endif %}
 
 <script>
   function mostrarTreino(treino) {
@@ -123,6 +147,8 @@
   }
 
   function trocarExercicio(exercicioId, grupo, index, tipo) {
+    console.log("Trocando:", { exercicioId, grupo, index, tipo });
+
     fetch(`/trocar-exercicio/?exercicio_id=${exercicioId}&grupo=${grupo}&index=${index}&tipo=${tipo}`)
       .then(response => response.json())
       .then(data => {
@@ -155,5 +181,20 @@
       console.error("Erro ao enviar avaliação:", error);
     });
   }
+
+  const objetivo = "{{ objetivo|lower }}";
+
+  const diasPorObjetivo = {
+    hipertrofia: ["seg", "ter", "qua", "sex"],
+    emagrecimento: ["seg", "ter", "qua", "qui", "sex", "sáb"],
+    condicionamento: ["seg", "ter", "qui", "sex", "sáb"]
+  };
+
+  const diasAtivos = diasPorObjetivo[objetivo] || [];
+
+  diasAtivos.forEach(dia => {
+    const cells = document.querySelectorAll(`.dia-${dia}`);
+    cells.forEach(cell => cell.classList.add("dia-ativo"));
+  });
 </script>
 {% endblock %}

@@ -9,6 +9,11 @@ body {
   height: 100vh;
 }
 
+.main-content {
+  flex: 1;
+  padding: 30px 40px;
+}
+
 .tabela-clientes-container {
   width: 95%;
   max-width: none;
@@ -17,7 +22,6 @@ body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* Barra de Pesquisa */
 .barra-pesquisa {
   margin-bottom: 20px;
 }

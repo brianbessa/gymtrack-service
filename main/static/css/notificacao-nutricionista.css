@@ -143,3 +143,47 @@ body {
   margin-top: 5px;
   font-weight: bold;
 }
+
+.upload-box {
+  margin-top: 1rem;
+  padding: 1rem;
+  background-color: #f4f4f4;
+  border-left: 4px solid #007bff;
+  border-radius: 8px;
+}
+
+.upload-box p {
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+}
+
+.upload-box input[type="file"] {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  padding: 0.5rem;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.upload-box input[type="file"]:hover {
+  border-color: #007bff;
+}
+
+.upload-box button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-box button:hover {
+  background-color: #0056b3;
+}
