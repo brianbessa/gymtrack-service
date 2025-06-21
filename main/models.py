@@ -4,6 +4,7 @@ from django.utils import timezone
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    restricoes_alimentares = models.TextField(blank=True, null=True)
     peso = models.FloatField(null=True, blank=True)
     altura = models.FloatField(null=True, blank=True)
     data_nascimento = models.DateField(null=True, blank=True)

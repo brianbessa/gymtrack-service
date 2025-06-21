@@ -335,17 +335,14 @@ def trocar_exercicio_view(request):
         exercicio_id = int(exercicio_id)
         user = request.user
 
-        # Busca todos os treinos do usuário e tipo atual
         treino_queryset = TreinoPersonalizado.objects.filter(user=user, tipo=tipo)
         treino_list = list(treino_queryset)
 
         if index >= len(treino_list):
             return JsonResponse({'success': False, 'error': 'Índice fora do alcance'})
 
-        # Coleta todos os IDs de exercícios já usados nesse treino
         ids_ja_usados = [t.exercicio.id for t in treino_list]
 
-        # Filtra os possíveis novos exercícios: mesmo grupo, não sendo o atual nem já usados
         exercicios_possiveis = list(
             Exercicio.objects.filter(grupo=grupo).exclude(id__in=ids_ja_usados)
         )
@@ -353,10 +350,8 @@ def trocar_exercicio_view(request):
         if not exercicios_possiveis:
             return JsonResponse({'success': False, 'error': 'Nenhum exercício alternativo disponível'})
 
-        # Escolhe aleatoriamente um exercício válido
         novo_exercicio = random.choice(exercicios_possiveis)
 
-        # Substitui o exercício no índice correspondente
         treino_list[index].exercicio = novo_exercicio
         treino_list[index].save()
 
@@ -449,7 +444,13 @@ def atualizar_perfil(request):
         field = data.get("field")
         value = data.get("value")
 
-        profile = request.user.profile
+        try:
+            if hasattr(request.user, 'nutricionista'):
+                profile = request.user.nutricionista
+            else:
+                profile = request.user.profile
+        except (Profile.DoesNotExist, Nutricionista.DoesNotExist):
+            return JsonResponse({"error": "Perfil não encontrado."}, status=404)
 
         if hasattr(profile, field):
             setattr(profile, field, value)

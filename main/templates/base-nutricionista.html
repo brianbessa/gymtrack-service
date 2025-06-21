@@ -26,50 +26,21 @@
 
       <div class="profile-info">
         <div class="info-item">
-          <i class="fas fa-mars"></i>
-          <div>
-            <span class="label">Gênero</span>
-            <strong>{{ profile.genero }}</strong>
-          </div>
-        </div>
-        <div class="info-item">
-          <i class="fas fa-chart-line"></i>
-          <div>
-            <span class="label">Nv. de atividade física</span>
-            <strong>{{ profile.experiencia }}</strong>
-          </div>
-        </div>
-        <div class="info-item">
           <i class="fas fa-birthday-cake"></i>
           <div>
             <span class="label">Nascimento</span>
-            <strong>{{ profile.data_nascimento|date:"d/m/Y" }}</strong>
+            <strong>{{ request.user.nutricionista.data_nascimento|date:"d/m/Y" }}</strong>
           </div>
         </div>
+
         <div class="info-item">
-          <i class="fas fa-dumbbell"></i>
-          <div class="info-label">
-            <span class="label">Experiência com treino</span>
-            <input type="text" class="editable-field" readonly value="{{ profile.experiencia }}" data-field="experiencia_treino" />
-          </div>
-          <button class="edit-btn" onclick="enableEdit(this)">
-            <i class="fas fa-pen"></i>
-          </button>
-        </div>
-        <div class="info-item">
-          <i class="fas fa-phone"></i>
+          <i class="fas fa-id-card"></i>
           <div>
-            <span class="label">Celular</span>
-            <strong>{{ profile.telefone }}</strong>
+            <span class="label">CRN</span>
+            <strong>{{ request.user.nutricionista.crn }}</strong>
           </div>
         </div>
-        <div class="info-item">
-          <i class="fas fa-utensils"></i>
-          <div>
-            <span class="label">Restrições alimentares</span>
-            <strong><a href="#">Visualizar <i class="fas fa-eye"></i></a></strong>
-          </div>
-        </div>
+
         <div class="info-item">
           <i class="fas fa-envelope"></i>
           <div>
@@ -78,6 +49,12 @@
           </div>
         </div>
       </div>
+
+      <div style="text-align: center; margin-top: 2rem;">
+        <a href="{% url 'home' %}" class="logout-btn">Sair</a>
+      </div>
+    </div>
+  </div>
 
       <div style="text-align: center; margin-top: 2rem;">
         <a href="{% url 'home' %}" class="logout-btn">Sair</a>
