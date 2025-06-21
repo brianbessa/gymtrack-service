@@ -38,4 +38,5 @@ urlpatterns = [
     path('trocar-exercicio/', views.trocar_exercicio_view, name='trocar_exercicio'),
     path('avaliar/', views.avaliar, name='avaliar'),
     path('upload-plano/<int:cliente_id>/', views.upload_plano_txt, name='upload_plano_txt'),
+    path('atualizar-foto/', views.atualizar_foto, name='atualizar_foto'),
 ]

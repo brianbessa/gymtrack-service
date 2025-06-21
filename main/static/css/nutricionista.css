@@ -26,9 +26,11 @@ body {
 
 .cards-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
+
 
 .card {
   width: 210px;
@@ -191,4 +193,38 @@ body {
 
 .info .btn.green:hover {
   background-color: #218838;
+}
+
+
+.nutricionista-info {
+  flex-grow: 1;
+}
+
+.nutricionista-nome {
+  font-size: 1.3rem;
+  margin: 0;
+  color: #111827;
+}
+
+.online {
+  color: #10b981;
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+.offline {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin-top: 0.2rem;
+}
+
+.stars {
+  margin-top: 0.4rem;
+  color: #facc15;
+}
+
+.vinculado {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #10b981;
 }

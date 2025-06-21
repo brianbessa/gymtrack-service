@@ -17,17 +17,30 @@
     <div class="cards-container">
       {% for nutricionista in nutricionistas %}
         <div class="card" onclick="openModal('{{ nutricionista.id }}')">
-          <h3 class="nutricionista-nome">{{ nutricionista.user.username }}</h3>
-          {% if nutricionista.is_online %}
-            <p class="online">🟢 Online agora</p>
-          {% else %}
-            <p class="offline">Online há {{ nutricionista.last_seen|timesince }}</p>
-          {% endif %}
-          <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐ <span>(0)</span></div>
+          <div class="card-top">
+            <div class="nutricionista-img">
+              {% if nutricionista.foto %}
+                <img src="{{ nutricionista.foto.url }}" alt="{{ nutricionista.user.get_full_name }}">
+              {% else %}
+                <img src="{% static 'img/user-default.jpg' %}" alt="Foto padrão">
+              {% endif %}
+            </div>
+            <div class="nutricionista-info">
+              <h3 class="nutricionista-nome">{{ nutricionista.user.username }}</h3>
+              {% if nutricionista.is_online %}
+                <p class="online">🟢 Online agora</p>
+              {% else %}
+                <p class="offline">Online há {{ nutricionista.last_seen|timesince }}</p>
+              {% endif %}
+              <div class="stars">⭐ ⭐ ⭐ ⭐ ⭐ <span>(0)</span></div>
+            </div>
+          </div>
           {% if not cliente.nutricionista %}
             <button class="btn">AGENDAR NUTRICIONISTA</button>
           {% else %}
-            <p>Você já está vinculado ao nutricionista: <strong>{{ cliente.nutricionista.user.username }}</strong></p>
+            <p class="vinculado">
+              Você já está vinculado ao nutricionista: <strong>{{ cliente.nutricionista.user.username }}</strong>
+            </p>
           {% endif %}
         </div>
 
@@ -35,7 +48,11 @@
           <div class="modal-content">
             <span class="close" onclick="closeModal('{{ nutricionista.id }}')">×</span>
             <div class="modal-body">
-              <img src="{% static 'img/user-default.png' %}" alt="{{ nutricionista.user.get_full_name }}">
+                {% if nutricionista.foto %}
+                  <img src="{{ nutricionista.foto.url }}" alt="{{ nutricionista.user.get_full_name }}">
+                {% else %}
+                  <img src="{% static 'img/user-default.jpg' %}" alt="Foto padrão">
+                {% endif %}
               <div class="info">
                 <h3>{{ nutricionista.user.username }}</h3>
                 <p class="online">Online recentemente</p>

@@ -10,7 +10,7 @@
 {% block content %}
 <main class="main-content">
   <div class="barra-superior">
-    <input type="text" placeholder="🔍 Pesquisar notificações" />
+    <input type="text" id="pesquisaNotificacoes" placeholder="🔍 Pesquisar notificações" />
     <div class="filtros">
       <button class="ativo">Todos</button>
       <button>Lidos</button>
@@ -50,4 +50,24 @@
     {% endif %}
   </div>
 </main>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const inputPesquisa = document.getElementById('pesquisaNotificacoes');
+    const notificacoes = document.querySelectorAll('.notificacao');
+
+    inputPesquisa.addEventListener('input', function () {
+      const termo = inputPesquisa.value.toLowerCase();
+
+      notificacoes.forEach(function (notificacao) {
+        const texto = notificacao.textContent.toLowerCase();
+        if (texto.includes(termo)) {
+          notificacao.style.display = 'flex'; // ou 'block', dependendo do seu CSS
+        } else {
+          notificacao.style.display = 'none';
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}

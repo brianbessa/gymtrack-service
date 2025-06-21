@@ -363,14 +363,14 @@ def trocar_exercicio_view(request):
 
 def nutricionista_view(request):
     try:
-        cliente = Cliente.objects.get(user=request.user)
+        cliente = Cliente.objects.select_related('nutricionista__user').get(user=request.user)
     except Cliente.DoesNotExist:
         cliente = None
 
     if cliente and cliente.nutricionista:
         nutricionistas = [cliente.nutricionista]
     else:
-        nutricionistas = Nutricionista.objects.all()
+        nutricionistas = Nutricionista.objects.select_related('user').all()
 
     return render(request, 'nutricionista.html', {
         'nutricionistas': nutricionistas,
@@ -711,3 +711,12 @@ def upload_plano_txt(request, cliente_id):
             messages.error(request, 'Erro: envie um arquivo .txt válido.')
 
     return redirect('notificacao-nutricionista')
+
+@login_required
+def atualizar_foto(request):
+    if request.method == 'POST' and request.FILES.get('foto'):
+        nutricionista = request.user.nutricionista
+        nutricionista.foto = request.FILES['foto']
+        nutricionista.save()
+        return redirect('notificacao-nutricionista')
+    return JsonResponse({'erro': 'Requisição inválida'}, status=400)

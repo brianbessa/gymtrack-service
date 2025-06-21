@@ -28,6 +28,7 @@ class Nutricionista(models.Model):
     data_nascimento = models.DateField(null=True, blank=True)
     valor_consulta = models.DecimalField(max_digits=6, decimal_places=2)
     chave_pix = models.CharField(max_length=100)
+    foto = models.ImageField(upload_to='nutricionistas/fotos/', null=True, blank=True)
     last_seen = models.DateTimeField(null=True, blank=True)  
 
     def __str__(self):
