@@ -48,11 +48,13 @@
     </div>
 
     <div class="welcome-container">
-      <h2>Bem-vindo!</h2>
-      <p>Informe seus dados para começar uma jornada conosco</p>
-      <a href="{% url 'cadastro' %}">
-        <button class="btn-outline">Criar nova conta</button>
-      </a>
+      <div class="overlay">
+        <h2>Bem-vindo!</h2>
+        <p>Informe seus dados para começar uma jornada conosco</p>
+        <a href="{% url 'cadastro' %}">
+          <button class="btn-outline">Criar nova conta</button>
+        </a>
+      </div>
     </div>
   </div>
 </body>
