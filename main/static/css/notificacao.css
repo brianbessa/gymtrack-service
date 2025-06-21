@@ -67,3 +67,31 @@ body {
 .notificacao.apagada {
   opacity: 0.5;
 }
+
+@media (max-width: 768px) {
+  .notificacao-container .notificacao {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .notificacao-hora-data {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .marcar-lida {
+    align-self: flex-start;
+    margin-right: 0;
+  }
+
+  .search-bar {
+    width: 100%;
+    margin: 0 0 15px 0;
+  }
+
+  #marcarTodasBtn {
+    width: 100%;
+    margin: 0;
+  }
+}
