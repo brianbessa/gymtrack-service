@@ -52,7 +52,7 @@ class CadastroForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
-            raise forms.ValidationError("Esse email já existe. Experimente outro.")
+            raise forms.ValidationError("Esse email já está em uso. Experimente outro.")
         return email
     
     def clean_data_nascimento(self):

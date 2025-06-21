@@ -73,7 +73,7 @@ def cadastro_nutricionista_view(request):
             errors['username'] = 'Esse nome de usuário já existe. Experimente outro.'
 
         if User.objects.filter(email=email).exists():
-            errors['email'] = 'Esse email já existe. Experimente outro.'
+            errors['email'] = 'Esse email já está em uso. Experimente outro.'
 
         if password != confirmar_senha:
             errors['confirmar_senha'] = 'As senhas não coincidem.'

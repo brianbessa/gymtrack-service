@@ -30,11 +30,14 @@
 
             {% if "monte uma dieta personalizada" in notificacao.mensagem and notificacao.cliente %}
               <div class="upload-box">
-                <p>Envie a dieta aqui e siga as instruções conforme indicado:</p>
-
+                <p>📎 Envie a dieta aqui e siga as instruções conforme indicado:</p>
                 <form method="post" action="{% url 'upload_plano_txt' notificacao.cliente.id %}" enctype="multipart/form-data">
                   {% csrf_token %}
-                  <input type="file" name="arquivo_txt" accept=".txt" required>
+                  <label class="file-label">
+                    <input type="file" name="arquivo_txt" accept=".txt" required>
+                    <span>Escolher arquivo .txt</span>
+                  </label>
+                  <span class="file-nome">Nenhum arquivo selecionado</span>
                   <button type="submit">Enviar Plano</button>
                 </form>
               </div>
@@ -62,10 +65,22 @@
       notificacoes.forEach(function (notificacao) {
         const texto = notificacao.textContent.toLowerCase();
         if (texto.includes(termo)) {
-          notificacao.style.display = 'flex'; // ou 'block', dependendo do seu CSS
+          notificacao.style.display = 'flex';
         } else {
           notificacao.style.display = 'none';
         }
+      });
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const fileInputs = document.querySelectorAll('.upload-box input[type="file"]');
+
+    fileInputs.forEach(input => {
+      input.addEventListener('change', function () {
+        const nomeArquivo = this.files.length > 0 ? this.files[0].name : 'Nenhum arquivo selecionado';
+        const nomeSpan = this.closest('.upload-box').querySelector('.file-nome');
+        nomeSpan.textContent = nomeArquivo;
       });
     });
   });
