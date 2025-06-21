@@ -42,11 +42,16 @@ def pagamento_view(request):
 
     qr_code_base64 = gerar_qr_pix(chave_pix, nome, cidade, valor)
 
+    numero_pedido = random.randint(1000000, 9999999)
+    data_pedido = datetime.now().strftime("%d/%m/%Y às %H:%M:%S")
+
     return render(request, 'pagamento.html', {
         'qr_code': qr_code_base64,
         'nome': nome,
         'email': user.email,
         'valor': valor,
+        'numero_pedido': numero_pedido,
+        'data_pedido': data_pedido,
     })
 
 def cadastro_nutricionista_view(request):
@@ -558,6 +563,7 @@ def grafico_series_repeticoes(request, exercicio_id):
         registros = (
             RegistroCarga.objects
             .filter(usuario=request.user, exercicio_id=exercicio_id)
+            .exclude(data__isnull=True) 
             .annotate(data_formatada=TruncDate('data'))
             .values('data_formatada')
             .annotate(total_reps=Sum('repeticoes'))

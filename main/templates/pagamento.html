@@ -2,53 +2,64 @@
 <html lang="pt-BR">
 {% load static %}
 <head>
-    <meta charset="UTF-8">
-    <title>Checkout - GymTrack</title>
-    <link rel="stylesheet" href="{% static 'css/pagamento.css' %}">
-    <style>
-        .left, .right { padding: 30px; }
-        .left { flex: 1; }
-        .right { flex: 1; background-color: #f9f9f9; border-radius: 10px; }
-        .plan-box { background: linear-gradient(135deg, #3b82f6, #1e40af); color: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-        .title { font-size: 24px; font-weight: bold; }
-        .total { font-size: 20px; font-weight: bold; }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8">
+  <title>Pagamento - GymTrack</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/pagamento.css' %}">
 </head>
 <body>
-    <div class="alert" id="pix-alert">
-        <i class="fas fa-exclamation-triangle"></i>
-        O QR Code gerado expirará em 15 minutos. Conclua o pagamento o quanto antes para garantir sua assinatura do plano Plus
-    </div>
-    <div class="left">
-        <img src="{% static 'img/logo.png' %}" alt="Logo" width="100"><br><br>
-        <h2>Checkout</h2>
-        <p><strong>Nome:</strong> {{ nome }}</p>
-        <p><strong>Email:</strong> {{ email }}</p>
-        <p><strong>Valor:</strong> R$ {{ valor }}</p>
 
-        <h3>Escaneie com seu app de banco</h3>
-        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code Pix" style="max-width: 300px; margin-top: 10px;">
+  <div class="container">
+    <div class="topo">
+      <h2>Efetuar Pagamento</h2>
+      <div class="status"><i class="fas fa-circle-exclamation"></i> AGUARDANDO PAGAMENTO</div>
     </div>
 
-    <div class="right">
-        <div class="plan-box">
-            <div class="title">📄 Plano Plus</div>
-            <p>Tenha acesso a recursos avançados como visualização do progresso com gráficos personalizados, registro detalhado de medidas e cargas, planos de treino elaborados exclusivamente para você e diversas outras funcionalidades!</p>
-            <p style="font-size: 24px; font-weight: bold;">R$ 49,90*</p>
+    <div class="corpo">
+      <div class="qr-code">
+        <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code Pix">
+      </div>
+      <div class="info-pix">
+        <div class="pix-header">
+            <img src="{% static 'img/pix.png' %}" alt="Pix" style="width: 200px;">
         </div>
-        <p>Subtotal: R$ 49,90</p>
-        <p>Frete: R$ 00,00</p>
-        <hr>
-        <p class="total">Total: R$ 49,90</p>
+        <div style="margin-top: 8px; font-weight: bold; color: #374151; font-size: 18px;">Pagar com Pix é fácil e rápido!</div>
+        <div class="pix-text">
+          Abra seu app de banco e escaneie o QR Code para concluir seu pagamento. Após o pagamento, a confirmação pode levar alguns minutos.
+        </div>
+        <div class="dados">
+          <p><strong>Número do Pedido:</strong> {{ numero_pedido }}</p>
+          <p><strong>Data do Pedido:</strong> {{ data_pedido }}</p>
+          <p><strong>Valor:</strong> R$ {{ valor }}</p>
+        </div>
+        <a href="#" class="botao-confirmar"><i class="fas fa-check-square"></i> Eu já efetuei o pagamento</a>
+      </div>
     </div>
-    
-<script>
-  setTimeout(() => {
-    const alert = document.getElementById('pix-alert');
-    if (alert) alert.style.display = 'none';
-  }, 10000); // 10 segundos
-</script>
+
+    <div class="aviso">
+      A liberação do pedido pode demorar alguns minutos após o pagamento.
+    </div>
+
+    <hr style="margin: 20px; border: 0.5px solid #e5e7eb;">
+
+    <div class="itens-pedido">
+    <h3 style="font-size: 18px; color: #111827;">Itens do Pedido</h3>
+    <div style="display: flex; gap: 30px; margin-top: 20px; align-items: center;">
+        <img src="{% static 'img/plano-plus.png' %}" alt="Plano Plus" style="width: 120px; border-radius: 10px; border: 1px solid #ddd;">
+        <div>
+        <h4 style="margin: 0; font-size: 16px; color: #1f2937;">Plano Plus</h4>
+        <p style="margin: 5px 0; font-size: 14px; color: #4b5563;">
+            Acesso premium com treinos personalizados, gráficos de desempenho, nutricionista, planos de treino e muito mais.
+        </p>
+        <p style="font-size: 14px; color: #6b7280;">
+            <strong>Usuário:</strong> {{ nome }}<br>
+            <strong>Email:</strong> {{ email }}
+        </p>
+        </div>
+    </div>
+    </div>
+
+  </div>
 
 </body>
 </html>

@@ -147,10 +147,10 @@
         document.getElementById("overviewTexto").innerHTML = overview;
       });
 
-    // Novo fetch para gráfico de Séries x Repetições
     fetch(`/grafico/series-repeticoes/${exercicioId}/`)
       .then(response => response.json())
       .then(data => {
+        console.log("Dados recebidos para gráfico séries/reps:", data);  // Adicione isto
         renderBarChart(data.labels, data.data);
       });
 

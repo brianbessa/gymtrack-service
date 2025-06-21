@@ -79,10 +79,12 @@ body {
 
 input, select {
   width: 100%;
+  height: 50px;
   padding: 0.8rem;
+  font-size: 1rem;
   border: 1px solid #a0c4ff;
   border-radius: 4px;
-  font-size: 0.95rem;
+  box-sizing: border-box;
 }
 
 .full-width {
@@ -98,13 +100,63 @@ input, select {
   grid-column: 1 / -1;
 }
 
-.confirm-button {
+form {
+  width: 100%;
+  max-width: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.form-wrapper {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.right-panel {
+  flex: 0.6;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+input, select {
+  width: 100%;
+  height: 58px;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: 1px solid #a0c4ff;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.form-grid div {
+  display: flex;
+  flex-direction: column;
+}
+
+.full-width {
   grid-column: 1 / -1;
-  background-color: #66a1ff; 
+}
+
+.confirm-button {
+  background-color: #66a1ff;
   color: white;
   border: none;
-  padding: 12px 20px;
-  font-size: 16px;
+  padding: 16px 24px;
+  font-size: 18px;
   border-radius: 8px;
   cursor: pointer;
   width: 100%;
@@ -115,25 +167,85 @@ input, select {
   background: #1a53cc;
 }
 
-.icon {
-  margin-right: 0.3rem;
-}
-
-form {
-  width: 100%;
-  max-width: 800px;
+.error {
+  background-color: #fdecea;
+  color: #b71c1c;
+  padding: 6px 10px;
+  border-radius: 5px;
   display: flex;
-  justify-content: center;
-}
-
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  border: 1px solid #f5c6cb;
+  margin-top: 4px;
+  box-sizing: border-box;
   width: 100%;
 }
 
-.form-grid div {
-  display: flex;
-  flex-direction: column;
+.error i {
+    color: #b71c1c;
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .right-panel {
+    flex: 1;
+    padding: 1rem;
+  }
+
+  .confirm-button {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  body {
+    flex-direction: column;
+  }
+
+  .left-panel {
+    flex: none;
+    width: 100%;
+    height: 180px;
+    background-size: cover;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .left-panel h1 {
+    font-size: 1.8rem;
+  }
+
+  .left-panel p {
+    font-size: 1rem;
+  }
+
+  .right-panel {
+    width: 100%;
+    padding: 1rem;
+  }
+
+  .logo-container {
+    display: none;
+  }
+
+  .form-wrapper {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  input, select {
+    height: 48px;
+    font-size: 1rem;
+    padding: 0.8rem;
+  }
+
+  .confirm-button {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
 }

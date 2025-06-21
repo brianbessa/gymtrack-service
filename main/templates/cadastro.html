@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Registro - GymTrack</title>
   <link rel="stylesheet" href="{% static 'css/cadastro.css' %}"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
   <div class="left-panel">
@@ -26,40 +28,55 @@
         <form method="post">
             {% csrf_token %}
 
-            {% if form.errors %}
-                <div class="error-messages">
-                    <ul>
-                    {% for field in form %}
-                        {% for error in field.errors %}
-                        <li><strong>{{ field.label }}:</strong> {{ error }}</li>
-                        {% endfor %}
-                    {% endfor %}
-                    {% for error in form.non_field_errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-
             <div class="form-grid">
                 <div>
-                    <label for="{{ form.username.id_for_label }}">Username:</label>
+                    <label for="{{ form.username.id_for_label }}">Usuário:</label>
                     {{ form.username }}
+
+                    {% for error in form.username.errors %}
+                        <div class="error">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span>{{ error }}</span>
+                        </div>
+                    {% endfor %}
                 </div>
                 <div>
                     <label for="{{ form.email.id_for_label }}">Email:</label>
                     {{ form.email }}
+
+                    {% for error in form.email.errors %}
+                        <div class="error">
+                            <i class="fa-solid fa-circle-exclamation"></i>
+                            <span>{{ error }}</span>
+                        </div>
+                    {% endfor %}
                 </div>
 
                 <div>
-                    <label for="{{ form.password1.id_for_label }}">Password:</label>
-                    {{ form.password1 }}
-                </div>
-                <div>
-                    <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
-                    {{ form.password2 }}
+                    <label for="{{ form.password1.id_for_label }}">Senha:</label>
+                    <div class="input-with-error">
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <div class="error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <span>{{ form.password1.errors.0 }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
 
+                <div>
+                    <label for="{{ form.password2.id_for_label }}">Confirmar senha:</label>
+                    <div class="input-with-error">
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <div class="error">
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                <span>{{ form.password2.errors.0 }}</span>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
                 <div>
                     <label for="{{ form.peso.id_for_label }}">Peso:</label>
                     {{ form.peso }}
@@ -72,6 +89,15 @@
                 <div>
                     <label for="{{ form.data_nascimento.id_for_label }}">Data nascimento:</label>
                     {{ form.data_nascimento }}
+
+                    {% if form.data_nascimento.errors %}
+                        <div class="error">
+                            {% for error in form.data_nascimento.errors %}
+                                <i class="fa-solid fa-circle-exclamation"></i>
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
                 <div>
                     <label for="{{ form.experiencia.id_for_label }}">Experiência:</label>
