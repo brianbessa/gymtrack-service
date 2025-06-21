@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-{% load static %}  
+{% load static %}
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,8 +8,9 @@
   <link rel="stylesheet" href="{% static 'css/cadastro-nutricionista.css' %}" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
   <div class="container">
     <div class="left-panel">
@@ -18,63 +19,114 @@
         <p>Sua carreira começa aqui.<br>Cadastre-se como nutricionista e se destaque!</p>
       </div>
     </div>
+
     <div class="right-panel">
       <a href="{% url 'home' %}">
         <img class="logo" src="{% static 'img/logo.png' %}" alt="Logo GymTrack"/>
-      </a>      
+      </a>
       <h2>EFETUE SEU <span class="highlight">REGISTRO</span></h2>
       <p class="subtext">Registro somente para nutricionistas</p>
+
       <form class="form" method="post">
         {% csrf_token %}
-        
+
         <div class="input-group">
-          <div class="input-icon">
-            <i class="fas fa-user"></i>
-            <input type="text" name="username" placeholder="Nome" required />
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-user"></i>
+              <input type="text" name="username" placeholder="Nome" required value="{{ form_data.username|default:'' }}" />
+            </div>
+            {% if errors.username %}
+              <div class="field-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ errors.username }}
+              </div>
+            {% endif %}
           </div>
-          <div class="input-icon">
-            <i class="fas fa-envelope"></i>
-            <input type="email" name="email" placeholder="Email" required />
+
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-envelope"></i>
+              <input type="email" name="email" placeholder="Email" required />
+            </div>
+            {% if errors.email %}
+              <div class="field-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ errors.email }}
+              </div>
+            {% endif %}
           </div>
         </div>
 
         <div class="input-group">
-          <div class="input-icon">
-            <i class="fas fa-id-card"></i>
-            <input type="text" name="crn" placeholder="CRN" />
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-id-card"></i>
+              <input type="text" name="crn" placeholder="CRN" />
+            </div>
+            {% if errors.crn %}
+              <div class="field-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ errors.crn }}
+              </div>
+            {% endif %}
           </div>
-          <div class="input-icon">
-            <i class="fas fa-calendar-alt"></i>
-            <input type="date" name="data_nascimento" />
+
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-calendar-alt"></i>
+              <input type="date" name="data_nascimento" />
+            </div>
+            {% if errors.data_nascimento %}
+              <div class="field-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ errors.data_nascimento }}
+              </div>
+            {% endif %}
           </div>
         </div>
 
         <label for="valor-consulta">Qual o valor da sua consulta?</label>
         <div class="input-group">
-          <div class="input-icon">
-            <span class="currency">R$</span>
-            <input type="text" name="valor_consulta" />
+          <div class="form-group">
+            <div class="input-icon">
+              <span class="currency">R$</span>
+              <input type="text" name="valor_consulta" />
+            </div>
           </div>
-          <div class="input-icon">
-            <i class="fas fa-key"></i>
-            <input type="text" name="chave_pix" placeholder="Chave Pix" />
+
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-key"></i>
+              <input type="text" name="chave_pix" placeholder="Chave Pix" />
+            </div>
           </div>
         </div>
 
         <div class="input-group">
-          <div class="input-icon">
-            <i class="fas fa-lock"></i>
-            <input type="password" name="password" placeholder="Senha" required />
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" name="password" placeholder="Senha" required />
+            </div>
           </div>
-          <div class="input-icon">
-            <i class="fas fa-lock"></i>
-            <input type="password" name="confirmar_senha" placeholder="Confirmar senha" required />
+
+          <div class="form-group">
+            <div class="input-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" name="confirmar_senha" placeholder="Confirmar senha" required />
+            </div>
+            {% if errors.confirmar_senha %}
+              <div class="field-error">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                {{ errors.confirmar_senha }}
+              </div>
+            {% endif %}
           </div>
         </div>
 
         <button type="submit">CONFIRMAR E PAGAR</button>
       </form>
-
     </div>
   </div>
 </body>

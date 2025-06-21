@@ -21,11 +21,12 @@ from django.utils.timezone import localtime
 from django.db.models import Sum
 from django.db.models.functions import TruncDate
 from django.urls import reverse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import requests
 from django.conf import settings
 from deep_translator import GoogleTranslator
 from utils import gerar_qr_pix, processar_txt_inteligente
+import re
 
 def home_view(request):
     return render(request, 'home.html')
@@ -66,9 +67,50 @@ def cadastro_nutricionista_view(request):
         valor_consulta = request.POST.get('valor_consulta')
         chave_pix = request.POST.get('chave_pix')
 
+        errors = {}
+
+        if User.objects.filter(username=username).exists():
+            errors['username'] = 'Esse nome de usuário já existe. Experimente outro.'
+
+        if User.objects.filter(email=email).exists():
+            errors['email'] = 'Esse email já existe. Experimente outro.'
+
         if password != confirmar_senha:
-            messages.error(request, 'As senhas não coincidem.')
-            return redirect('cadastro-nutricionista')
+            errors['confirmar_senha'] = 'As senhas não coincidem.'
+
+        if data_nascimento:
+            try:
+                data_nasc = datetime.strptime(data_nascimento, '%Y-%m-%d').date()
+                hoje = date.today()
+
+                if data_nasc > hoje:
+                    errors['data_nascimento'] = 'A data de nascimento não pode ser no futuro.'
+                else:
+                    idade = hoje.year - data_nasc.year - ((hoje.month, hoje.day) < (data_nasc.month, data_nasc.day))
+                    if idade > 120:
+                        errors['data_nascimento'] = 'Data de nascimento inválida.'
+                    if idade < 18:
+                        errors['data_nascimento'] = 'Você deve ter pelo menos 18 anos para se cadastrar.'
+
+            except ValueError:
+                errors['data_nascimento'] = 'Data de nascimento inválida.'
+
+        else:
+            errors['data_nascimento'] = 'Por favor, informe sua data de nascimento.'
+
+        CRN_REGEX = r'^\d{4,6}/[1-9]( [A-Z]{2})?$' 
+
+        if not crn:
+            errors['crn'] = 'O CRN é obrigatório.'
+        else:
+            if not re.match(CRN_REGEX, crn):
+                errors['crn'] = 'CRN inválido. Formato esperado: 12345/5 ou 12345/5 SP.'
+
+        if errors:
+            return render(request, 'cadastro-nutricionista.html', {
+                'form_data': request.POST,
+                'errors': errors
+            })
 
         user = User.objects.create_user(username=username, email=email, password=password)
         user.is_staff = True

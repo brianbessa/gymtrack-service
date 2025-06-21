@@ -6,10 +6,10 @@ body {
 
 .container {
   display: flex;
-  height: 100vh;
+  flex-wrap: wrap;
+  min-height: 100vh;
   width: 100%;
 }
-
 
 .left-panel {
   flex: 1;
@@ -25,7 +25,7 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6); /* escurece a imagem */
+  background: rgba(0, 0, 0, 0.6);
 }
 
 .left-content {
@@ -54,16 +54,12 @@ body {
   align-items: center;
 }
 
-.right-panel a .logo {
-  transform: translateX(330px);
-}
-
 .logo {
-  margin-top: -50px;
-  transform: translateY(-75px);
+  position: absolute;
+  top: 20px;
+  right: 20px;
   width: 100px;
-  align-self: flex-end;
-  margin-bottom: 10px;
+  cursor: pointer;
 }
 
 h2 {
@@ -84,18 +80,26 @@ h2 {
 
 .form {
   width: 100%;
-  max-width: 520px;
+  max-width: 600px;
 }
 
 .input-group {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 15px;
+}
+
+.form-group {
+  width: 100%;
+  max-width: 45%;
+  min-width: 220px;
+  box-sizing: border-box;
 }
 
 .input-icon {
   position: relative;
-  flex: 1;
 }
 
 .input-icon i,
@@ -141,4 +145,129 @@ button {
 
 button:hover {
   background: #3b6de0;
+}
+
+.field-error {
+  background-color: #fdecea;
+  color: #b71c1c;
+  padding: 6px 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  border: 1px solid #f5c6cb;
+  margin-top: 4px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 20px;
+}
+
+.field-error i {
+  color: #b71c1c;
+}
+
+/* RESPONSIVIDADE PARA TELAS MENORES */
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .left-panel {
+    height: 300px;
+    flex: none;
+  }
+
+  .left-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .right-panel {
+    padding: 40px 30px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .left-panel {
+    background-position: center;
+    background-size: cover;
+  }
+
+  .left-content h1 {
+    font-size: 1.8rem;
+  }
+
+  .left-content p {
+    font-size: 1rem;
+  }
+
+  .form {
+    padding: 0 10px;
+  }
+
+  .input-group {
+    flex-direction: column;
+  }
+
+  .form-group {
+    max-width: 100%;
+    min-width: unset;
+  }
+
+  .logo {
+    top: 10px;
+    right: 10px;
+    width: 80px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .left-panel {
+    height: 220px;
+  }
+
+  .left-content h1 {
+    font-size: 1.6rem;
+  }
+
+  .left-content p {
+    font-size: 0.9rem;
+  }
+
+  .right-panel {
+    padding: 20px 15px;
+  }
+
+  .subtext {
+    font-size: 0.85rem;
+  }
+
+  label {
+    font-size: 0.85rem;
+  }
+
+  .input-icon input {
+    padding-left: 34px;
+    font-size: 0.85rem;
+  }
+
+  .field-error {
+    font-size: 0.8rem;
+  }
+
+  button {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
 }
