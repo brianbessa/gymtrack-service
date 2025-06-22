@@ -23,17 +23,39 @@ function calcularIMCeTMB() {
     const tmbTotal = tmb * atividade;
 
     let classificacao = "";
-    if (imc < 18.5) classificacao = "Magreza (Grau 0)";
-    else if (imc < 25) classificacao = "Normal (Grau 0)";
-    else if (imc < 30) classificacao = "Sobrepeso (Grau I)";
-    else if (imc < 40) classificacao = "Obesidade (Grau II)";
-    else classificacao = "Obesidade Grave (Grau III)";
+    let classeIMC = "";
+    if (imc < 18.5) {
+        classificacao = "Magreza (Grau 0)";
+        classeIMC = "imc-magreza";
+    } else if (imc < 25) {
+        classificacao = "Normal (Grau 0)";
+        classeIMC = "imc-normal";
+    } else if (imc < 30) {
+        classificacao = "Sobrepeso (Grau I)";
+        classeIMC = "imc-sobrepeso";
+    } else if (imc < 40) {
+        classificacao = "Obesidade (Grau II)";
+        classeIMC = "imc-obesidade";
+    } else {
+        classificacao = "Obesidade Grave (Grau III)";
+        classeIMC = "imc-obesidade-grave";
+    }
 
     const conteudo = `
-        <strong>Resultado:</strong><br>
-        ✅ <b>IMC:</b> ${imc.toFixed(2)} ${classificacao}<br>
-        🔥 <b>TMB:</b> ${tmb.toFixed(2)} kcal/dia<br>
-        🏃‍♂️ <b>Gasto Diário com Atividade:</b> ${tmbTotal.toFixed(2)} kcal/dia
+        <strong>Resultado:</strong>
+        <div class="resultado-linha">
+            <span class="icone">✅</span>
+            <b>IMC:</b>
+            <span class="${classeIMC}">${imc.toFixed(2)} - ${classificacao}</span>
+        </div>
+        <div class="resultado-linha">
+            <span class="icone">🔥</span>
+            <b>TMB:</b> ${tmb.toFixed(2)} kcal/dia
+        </div>
+        <div class="resultado-linha">
+            <span class="icone">🏃‍♂️</span>
+            <b>Gasto Diário com Atividade:</b> ${tmbTotal.toFixed(2)} kcal/dia
+        </div>
     `;
 
     document.getElementById('conteudoModal').innerHTML = conteudo;
