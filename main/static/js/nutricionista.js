@@ -12,18 +12,18 @@ function closeModal(id) {
     }
 }
 
-const searchInput = document.getElementById('searchInput');
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('searchInput');
 
-searchInput.addEventListener('input', function () {
-    const filter = this.value.toLowerCase();
-    const cards = document.querySelectorAll('.cards-container .card');
+    if (searchInput) {
+        searchInput.addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.cards-container .card');
 
-    cards.forEach(card => {
-        const nome = card.querySelector('.nutricionista-nome').textContent.toLowerCase();
-        if (nome.includes(filter)) {
-        card.style.display = 'block';
-        } else {
-        card.style.display = 'none';
-        }
-    });
+            cards.forEach(card => {
+                const nome = card.querySelector('.nutricionista-nome').textContent.toLowerCase();
+                card.style.display = nome.includes(filter) ? 'block' : 'none';
+            });
+        });
+    }
 });

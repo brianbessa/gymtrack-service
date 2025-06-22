@@ -26,11 +26,10 @@ body {
 
 .cards-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 1.5rem;
   margin-top: 2rem;
 }
-
 
 .card {
   width: 210px;
@@ -77,76 +76,107 @@ body {
   color: #f5b301;
 }
 
-.card .btn {
-  background-color: #4CAF50;
-  color: white;
+.agendar-btn {
+  background: linear-gradient(135deg, #38bdf8, #22d3ee);
+  color: #fff;
   border: none;
-  padding: 9px 14px;
-  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 14px;
-  margin-top: 12px;
-  transition: background-color 0.3s ease;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
 }
 
-.card .btn:hover {
-  background-color: #43a047;
+.agendar-btn:hover {
+  background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .modal {
-  display: none; 
+  display: none;
   position: fixed;
   z-index: 1000;
-  top: 0; left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);         
-  justify-content: center;  
-  align-items: center;      
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-content {
-  background-color: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  max-width: 600px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 620px;
   width: 90%;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
   position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
 .close {
   position: absolute;
-  top: 16px;
+  top: 18px;
   right: 20px;
-  font-size: 22px;
-  font-weight: bold;
-  color: #555;
+  font-size: 26px;
+  color: #888;
   cursor: pointer;
+  transition: color 0.2s;
+}
+
+.close:hover {
+  color: #000;
 }
 
 .modal-body {
   display: flex;
-  gap: 30px;
   align-items: flex-start;
+  gap: 28px;
 }
 
 .modal-body img {
-  width: 210px;
+  width: 200px;
   height: auto;
-  border-radius: 14px;
+  border-radius: 16px;
   object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.modal-body img:hover {
+  transform: scale(1.03);
 }
 
 .info {
   flex: 1;
 }
 
+
 .info h3 {
-  margin-bottom: 6px;
-  font-size: 18px;
+  margin-top: 0;
+  font-size: 20px;
   font-weight: 600;
+  color: #111827;
+}
+
+.info p {
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #4b5563;
 }
 
 .info .online {
@@ -156,14 +186,13 @@ body {
 }
 
 .info .price {
-  font-size: 14px;
-  font-weight: 500;
-  background-color: #e8f7ee;
-  color: #28a745;
-  padding: 6px 10px;
-  border-radius: 6px;
+  background-color: #e6fcef;
+  color: #16a34a;
+  padding: 6px 12px;
+  border-radius: 8px;
   display: inline-block;
-  margin-bottom: 12px;
+  font-weight: 600;
+  margin-bottom: 14px;
 }
 
 .info .stars {
@@ -173,26 +202,26 @@ body {
 }
 
 .info .desc {
+  line-height: 1.6;
   font-size: 14px;
-  color: #333;
-  line-height: 1.5;
-  margin-bottom: 20px;
+  color: #374151;
 }
 
 .info .btn.green {
-  background-color: #28a745;
+  background: linear-gradient(to right, #10b981, #059669);
   color: white;
-  padding: 10px 22px;
-  font-size: 14px;
-  font-weight: 500;
+  padding: 12px 24px;
+  font-size: 15px;
+  font-weight: 600;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 .info .btn.green:hover {
-  background-color: #218838;
+  background: linear-gradient(to right, #059669, #047857);
+  transform: translateY(-2px);
 }
 
 
@@ -227,4 +256,100 @@ body {
   margin-top: 1rem;
   font-size: 0.95rem;
   color: #10b981;
+}
+
+@media (max-width: 1024px) {
+  .search-bar input {
+    width: 60%;
+  }
+
+  .cards-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card {
+    width: 45%;
+    margin-bottom: 20px;
+  }
+
+  .modal-body {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .modal-body img {
+    width: 180px;
+  }
+
+  .info .btn.green {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-bar input {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .card {
+    width: 100%;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+
+  .modal-content {
+    padding: 20px;
+  }
+
+  .modal-body img {
+    width: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 16px;
+  }
+
+  .card img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .card h3 {
+    font-size: 16px;
+  }
+
+  .card p,
+  .card .stars {
+    font-size: 12px;
+  }
+
+  .card .btn {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .info h3 {
+    font-size: 16px;
+  }
+
+  .info .desc,
+  .info .price {
+    font-size: 13px;
+  }
+
+  .modal-body img {
+    width: 140px;
+  }
+
+  .info .btn.green {
+    font-size: 13px;
+    padding: 10px;
+  }
 }
