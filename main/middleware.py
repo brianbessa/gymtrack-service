@@ -12,6 +12,6 @@ class UpdateLastSeenMiddleware:
                 nutricionista.last_seen = timezone.now()
                 nutricionista.save(update_fields=['last_seen'])
             except Nutricionista.DoesNotExist:
-                pass  # Ignora se não for nutricionista
+                pass
 
         return self.get_response(request)

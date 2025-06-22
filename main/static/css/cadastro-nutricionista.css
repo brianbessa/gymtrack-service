@@ -167,7 +167,6 @@ button:hover {
   color: #b71c1c;
 }
 
-/* RESPONSIVIDADE PARA TELAS MENORES */
 
 @media (max-width: 1024px) {
   .container {

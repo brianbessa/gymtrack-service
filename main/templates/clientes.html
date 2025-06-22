@@ -36,7 +36,6 @@
               <td>
               <img src="{% static 'img/sendmsg.png' %}" alt="Enviar mensagem" class="icon-acao" style="cursor:pointer;" onclick="mostrarFormulario({{ cliente.user.id }})">
 
-              <!-- Formulário oculto -->
               <div id="formulario-msg-{{ cliente.user.id }}" class="formulario-msg" style="display: none; margin-top: 10px;">
                   <form method="POST" action="{% url 'enviar_mensagem' cliente.user.id %}">
                   {% csrf_token %}

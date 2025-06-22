@@ -214,11 +214,11 @@ html, body {
 }
 
 .btn-submit {
-  background-color: #28a745; /* Verde vibrante */
+  background-color: #28a745;
   color: white;
   padding: 10px 30px;
   border: none;
-  border-radius: 20px; /* Deixa bem arredondado */
+  border-radius: 20px; 
   font-weight: bold;
   font-size: 14px;
   cursor: pointer;
@@ -260,7 +260,6 @@ html, body {
   font-weight: bold;
 }
 
-/* Container da célula de ação */
 td.acoes {
   display: flex;
   align-items: center;
@@ -269,7 +268,6 @@ td.acoes {
   padding: 4px 8px;
 }
 
-/* Botão genérico de ação */
 .btn-acao {
   background: none;
   border: none;
@@ -286,7 +284,28 @@ td.acoes {
   color: #007bff;
 }
 
-/* Ajuste opcional para evitar clique no <i> falhar */
 .btn-acao i {
   pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .filters-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search-bar {
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .filter-bar {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .cards-container {
+    padding-bottom: 60px;
+  }
 }
