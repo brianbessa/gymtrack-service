@@ -102,22 +102,43 @@ nav a:hover {
 }
 
 .botao {
-    background: linear-gradient(90deg, #1c3fe3 0%, #3494e6 100%);
-    padding: 12px 24px;
-    border-radius: 30px;
-    color: white;
-    font-weight: bold;
-    font-size: 28px;
-    display: inline-block;
-    transition: background 0.3s;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    text-align: center;
-    max-width: fit-content;
+  background: linear-gradient(90deg, #1c3fe3 0%, #3494e6 100%);
+  padding: 12px 24px;
+  border-radius: 30px;
+  color: white;
+  font-weight: bold;
+  font-size: 28px;
+  display: inline-block;
+  transition: color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  text-align: center;
+  max-width: fit-content;
+  position: relative;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.botao::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(255,255,255,0.6), rgba(255,255,255,0.3));
+  transform: skewX(-20deg);
+  transition: all 0.5s ease;
+  z-index: -1;
 }
 
 .botao:hover {
-    background: linear-gradient(to right, #0059ff, #1e90ff);
-    transform: scale(1.05);
+  color: #d0e4ff;
+  transform: scale(1.05);
+}
+
+.botao:hover::before {
+  left: 0;
+  transition: all 0.5s ease;
 }
 
 .btn {

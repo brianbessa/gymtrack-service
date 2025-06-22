@@ -9,6 +9,11 @@
 
 {% block content %}
 <div class="main-content">
+  <div id="alerta-msg" style="display:none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+      background-color: #4CAF50; color: white; padding: 15px 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      font-weight: bold; z-index: 9999;">
+    Mensagem enviada com sucesso!
+  </div>
   <div class="tabela-clientes-container">
 
     <div class="barra-pesquisa">
@@ -81,23 +86,35 @@
     }
   }
 
-    function mostrarFormulario(clienteId) {
-        const form = document.getElementById(`formulario-msg-${clienteId}`);
-        form.style.display = "block";
-    }
+  function mostrarFormulario(clienteId) {
+      const form = document.getElementById(`formulario-msg-${clienteId}`);
+      form.style.display = "block";
+  }
 
-    function esconderFormulario(clienteId) {
-        const form = document.getElementById(`formulario-msg-${clienteId}`);
-        form.style.display = "none";
-    }
+  function esconderFormulario(clienteId) {
+      const form = document.getElementById(`formulario-msg-${clienteId}`);
+      form.style.display = "none";
+  }
 
-    {% if messages %}
-        {% for message in messages %}
-            {% if message.tags == 'success' and message == 'mensagem_enviada' %}
-                alert("Mensagem enviada com sucesso!");
-            {% endif %}
-        {% endfor %}
-    {% endif %}
+  function mostrarAlerta() {
+    const alerta = document.getElementById("alerta-msg");
+    alerta.style.display = "block";
+
+    setTimeout(() => {
+      alerta.style.display = "none";
+    }, 8000);
+  }
+
+  {% if messages %}
+    {% for message in messages %}
+      {% if message.tags == 'success' and message.message == 'mensagem_enviada' %}
+        document.addEventListener('DOMContentLoaded', function() {
+          mostrarAlerta();
+        });
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+
 </script>
 
 {% endblock %}

@@ -480,7 +480,10 @@ def enviar_mensagem(request, cliente_id):
             mensagem=descricao,
         )
 
-        return HttpResponseRedirect('/clientes?mensagem_enviada=1')
+        messages.success(request, 'mensagem_enviada')
+        return redirect('clientes')
+
+    return redirect('clientes')
     
 def registrar_cargas(request):
     exercicios = Exercicio.objects.all()
@@ -606,15 +609,24 @@ def grafico_series_repeticoes(request, exercicio_id):
         registros = (
             RegistroCarga.objects
             .filter(usuario=request.user, exercicio_id=exercicio_id)
-            .exclude(data__isnull=True) 
+            .exclude(data__isnull=True)
             .annotate(data_formatada=TruncDate('data'))
             .values('data_formatada')
             .annotate(total_reps=Sum('repeticoes'))
             .order_by('data_formatada')
         )
 
-        labels = [r['data_formatada'].strftime('%d/%m') for r in registros if r['data_formatada']]
-        data = [r['total_reps'] for r in registros]
+        labels = []
+        data = []
+
+        for r in registros:
+            data_formatada = r.get('data_formatada')
+            try:
+                labels.append(data_formatada.strftime('%d/%m'))
+            except Exception as e:
+                print(f"[ERRO] data: {data_formatada}, tipo: {type(data_formatada)}, erro: {e}")
+                labels.append("Erro")
+            data.append(r['total_reps'])
 
         return JsonResponse({'labels': labels, 'data': data})
 
