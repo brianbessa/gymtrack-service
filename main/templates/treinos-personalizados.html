@@ -6,7 +6,9 @@
 {% block extra_css %}
   <link rel="stylesheet" href="{% static 'css/treinos-personalizados.css' %}">
   <script src="{% static 'js/treinos-personalizados.js' %}"></script>
+  <script> window.csrfToken = '{{ csrf_token }}'; </script>
 {% endblock %}
+
 
 {% block content %}
 <div class="treino-container">
@@ -36,7 +38,7 @@
           <span>Repetições</span>
         </div>
       </div>
-      <button class="btn-trocar" onclick="trocarExercicio('{{ treino.exercicio.id }}', '{{ treino.exercicio.grupo }}', '{{ forloop.counter0 }}', 'B')">
+      <button class="btn-trocar" onclick="trocarExercicio('{{ treino.exercicio.id }}', '{{ treino.exercicio.grupo }}', '{{ forloop.counter0 }}', 'A')">
         <svg xmlns="http://www.w3.org/2000/svg" class="icon-swap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M4 7h16M4 7l4 4M4 7l4-4M20 17H4m16 0l-4-4m4 4l-4 4" />
         </svg>

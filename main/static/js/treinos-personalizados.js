@@ -32,7 +32,7 @@ function enviarAvaliacao(nota) {
         method: 'POST',
         headers: {
         'Content-Type': 'application/json',
-        'X-CSRFToken': '{{ csrf_token }}'
+        'X-CSRFToken': window.csrfToken
         },
         body: JSON.stringify({ nota: nota })
     }).then(res => {
