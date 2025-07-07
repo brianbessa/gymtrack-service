@@ -84,11 +84,11 @@ WSGI_APPLICATION = 'gymtrack.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'gymtrack',
-        'USER': 'root',
-        'PASSWORD': 'c4n4t4z4',
-        'HOST': 'localhost',
-        'PORT': '3306', 
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
